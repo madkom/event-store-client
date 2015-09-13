@@ -1,0 +1,7 @@
+*.swp
+*~
+/.idea
+/bin
+/phpunit.xml
+/vendor
+php-cs-fixer.phar

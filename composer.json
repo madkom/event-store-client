@@ -1,0 +1,36 @@
+{
+    "name": "madkom/eventstore-client",
+    "description": "EventStore client for PHP",
+    "type": "library",
+    "keywords": [
+        "eventsourcing",
+        "eventstore",
+        "client",
+        "socket"
+    ],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Dariusz Gafka",
+            "email": "dgafka.mail@gmail.com"
+        }
+    ],
+    "require": {
+        "php": ">=5.5.0",
+        "ramsey/uuid": "~2.8",
+        "react/socket-client": "v0.4.3",
+        "TrafficCophp/ByteBuffer": "dev-master"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "@stable",
+        "phpspec/prophecy": "1.5.0"
+    },
+    "config": {
+        "bin-dir": "bin"
+    },
+    "autoload": {
+        "psr-4": {
+            "EventStore\\Client\\": "src/"
+        }
+    }
+}
