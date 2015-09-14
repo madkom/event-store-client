@@ -21,6 +21,9 @@ class MessageType
 
 
 	//130
+//	Turned off for some reason
+//	const CREATE_STREAM = 0x80,
+//	const CREATE_STREAM_COMPLETED = 0x81;
 	const WRITE_EVENTS =  0x82;
 	const WRITE_EVENTS_COMPLETED = 0x83;
 
@@ -39,17 +42,57 @@ class MessageType
 	//176
 	const READ = 0xB0;
 	const READ_EVENT_COMPLETED =  0xB1;
+	/**
+	 * Used with data:
+	 * EventStore\Client\Domain\Socket\Data\ReadStreamEvents
+	 */
 	const READ_STREAM_EVENTS_FORWARD = 0xB2;
+	/**
+	 * Used with data:
+	 * EventStore\Client\Domain\Socket\Data\ResolvedIndexedEvent[]
+	 */
 	const READ_STREAM_EVENTS_FORWARD_COMPLETED = 0xB3;
+	/**
+	 * Used with data:
+	 * EventStore\Client\Domain\Socket\Data\ReadStreamEvents
+	 */
 	const READ_STREAM_EVENTS_BACKWARD = 0xB4;
+	/**
+	 * Used with data:
+	 * EventStore\Client\Domain\Socket\Data\ResolvedIndexedEvent[]
+	 */
 	const READ_STREAM_EVENTS_BACKWARD_COMPLETED = 0xB5;
+	/**
+	 * Used with data:
+	 * EventStore\Client\Domain\Socket\Data\ReadAllEvents
+	 */
 	const READ_ALL_EVENTS_FORWARD = 0xB6;
+	/**
+	 * Used with data:
+	 * EventStore\Client\Domain\Socket\Data\ResolvedEvent[]
+	 */
 	const READ_ALL_EVENTS_FORWARD_COMPLETED = 0xB7;
+	/**
+	 * Used with data:
+	 * EventStore\Client\Domain\Socket\Data\ReadAllEvents
+	 */
 	const READ_ALL_EVENTS_BACKWARD = 0xB8;
+	/**
+	 * Used with data:
+	 * EventStore\Client\Domain\Socket\Data\ResolvedEvent[]
+	 */
 	const READ_ALL_EVENTS_BACKWARD_COMPLETED = 0xB9;
 
 	//192
+	/**
+	 * Used with data:
+	 * EventStore\Client\Domain\Socket\Data\SubscribeToStream
+	 */
 	const SUBSCRIBE_TO_STREAM = 0xC0;
+	/**
+	 * Used with data:
+	 * EventStore\Client\Domain\Socket\Data\SubscriptionConfirmation
+	 */
 	const SUBSCRIPTION_CONFIRMATION = 0xC1;
 	const STREAM_EVENT_APPEARED = 0xC2;
 	const UNSUBSCRIBE_FROM_STREAM = 0xC3;

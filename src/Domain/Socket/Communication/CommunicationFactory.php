@@ -66,6 +66,14 @@ class CommunicationFactory
                 echo "Read all events backward completed\n";
                 $communicable = new Type\ReadAllEventsCompleted();
                 break;
+            case MessageType::SUBSCRIBE_TO_STREAM:
+                echo "Subscribe to stream\n";
+                $communicable = new Type\SubscribeToStream();
+                break;
+            case MessageType::SUBSCRIPTION_CONFIRMATION:
+                echo "Subscription confirmation";
+                $communicable = new Type\SubscriptionConfirmation();
+                break;
             case MessageType::BAD_REQUEST:
                 echo "Bad Request\n";
                 $communicable = new Type\BadRequest();

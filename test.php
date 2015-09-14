@@ -40,20 +40,34 @@ $resolvedConnection->then(function (React\Stream\Stream $stream) {
 //            $readStreamEvent)
 //        );
 
-    $readAllEvent = new EventStore\Client\Domain\Socket\Data\ReadAllEvents();
-    $readAllEvent->setMaxCount(1000);
-    $readAllEvent->setRequireMaster(false);
-    $readAllEvent->setResolveLinkTos(true);
-    $readAllEvent->setCommitPosition(1000);
-    $readAllEvent->setPreparePosition(1000);
+//    $readAllEvent = new EventStore\Client\Domain\Socket\Data\ReadAllEvents();
+//    $readAllEvent->setMaxCount(1000);
+//    $readAllEvent->setRequireMaster(false);
+//    $readAllEvent->setResolveLinkTos(true);
+//    $readAllEvent->setCommitPosition(1000);
+//    $readAllEvent->setPreparePosition(1000);
+//
+//    $streamHandler->sendMessage(
+//        new \EventStore\Client\Domain\Socket\Message\SocketMessage(
+//            new \EventStore\Client\Domain\Socket\Message\MessageType(\EventStore\Client\Domain\Socket\Message\MessageType::READ_ALL_EVENTS_FORWARD),
+//            \EventStore\Client\Domain\Socket\Message\MessageConfiguration::FLAGS_NONE,
+//            null,
+//            $readAllEvent)
+//    );
+
+    $subscribeToStream = new \EventStore\Client\Domain\Socket\Data\SubscribeToStream();
+    $subscribeToStream->setEventStreamId('TestStream');
+    $subscribeToStream->setResolveLinkTos(true);
 
     $streamHandler->sendMessage(
         new \EventStore\Client\Domain\Socket\Message\SocketMessage(
-            new \EventStore\Client\Domain\Socket\Message\MessageType(\EventStore\Client\Domain\Socket\Message\MessageType::READ_ALL_EVENTS_FORWARD),
+            new \EventStore\Client\Domain\Socket\Message\MessageType(\EventStore\Client\Domain\Socket\Message\MessageType::SUBSCRIBE_TO_STREAM),
             \EventStore\Client\Domain\Socket\Message\MessageConfiguration::FLAGS_NONE,
             null,
-            $readAllEvent)
+            $subscribeToStream)
     );
+
+
 
 //    $stream->close();
 });
