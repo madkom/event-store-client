@@ -42,8 +42,9 @@ class StreamHandlerTest extends PHPUnit_Framework_TestCase
         $this->messageDecomposer = $this->internalProphet->prophesize('EventStore\Client\Domain\Socket\Message\MessageDecomposer');
         $this->messageComposer   = $this->internalProphet->prophesize('EventStore\Client\Domain\Socket\Message\MessageComposer');
         $this->communicationFactory = $this->internalProphet->prophesize('EventStore\Client\Domain\Socket\Communication\CommunicationFactory');
+        $logger                  = $this->internalProphet->prophesize('Psr\Log\LoggerInterface');
 
-        $this->streamHandler = new \EventStore\Client\Domain\Socket\StreamHandler($this->stream->reveal(), $this->messageDecomposer->reveal(), $this->messageComposer->reveal(), $this->communicationFactory->reveal());
+        $this->streamHandler = new \EventStore\Client\Domain\Socket\StreamHandler($this->stream->reveal(), $logger->reveal(), $this->messageDecomposer->reveal(), $this->messageComposer->reveal(), $this->communicationFactory->reveal());
 
 
         $messageType = $this->internalProphet->prophesize('EventStore\Client\Domain\Socket\Message\MessageType');

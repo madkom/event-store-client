@@ -4,7 +4,6 @@ namespace EventStore\Client\Domain\Socket\Communication;
 
 use EventStore\Client\Domain\Socket\Message\MessageType;
 use EventStore\Client\Domain\Socket\Communication\Type;
-use SebastianBergmann\GlobalState\RuntimeException;
 
 /**
  * Class CommunicationFactory
@@ -17,7 +16,8 @@ class CommunicationFactory
     /**
      * @param MessageType $messageType
      *
-     * @return Communicable|null
+     * @return Communicable
+     * @throws \RuntimeException
      */
     public function create(MessageType $messageType)
     {
@@ -44,14 +44,34 @@ class CommunicationFactory
                 break;
             case MessageType::READ_STREAM_EVENTS_FORWARD:
                 echo "Read stream events forward\n";
-                $communicable = new Type\ReadStreamEventsForward();
+                $communicable = new Type\ReadStreamEvents();
+                break;
+            case MessageType::READ_STREAM_EVENTS_FORWARD_COMPLETED:
+                echo "Read stream events completed\n";
+                $communicable = new Type\ReadStreamEventsCompleted();
+                break;
+            case MessageType::READ_ALL_EVENTS_FORWARD:
+                echo "Read all events forward\n";
+                $communicable = new Type\ReadAllEvents();
+                break;
+            case MessageType::READ_ALL_EVENTS_BACKWARD:
+                echo "Read all events backward\n";
+                $communicable = new Type\ReadAllEvents();
+                break;
+            case MessageType::READ_ALL_EVENTS_FORWARD_COMPLETED:
+                echo "Read all events forward completed\n";
+                $communicable = new Type\ReadAllEventsCompleted();
+                break;
+            case MessageType::READ_ALL_EVENTS_BACKWARD_COMPLETED:
+                echo "Read all events backward completed\n";
+                $communicable = new Type\ReadAllEventsCompleted();
                 break;
             case MessageType::BAD_REQUEST:
                 echo "Bad Request\n";
                 $communicable = new Type\BadRequest();
                 break;
             default:
-                throw new RuntimeException('Unsupported message type ' . $messageType->getType());
+                throw new \RuntimeException('Unsupported message type ' . $messageType->getType());
         }
 
         return $communicable;

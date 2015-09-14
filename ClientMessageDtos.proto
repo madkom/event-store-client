@@ -1,4 +1,4 @@
-package EventStore.Socket.Proxy;
+package EventStore.Client.Domain.Socket.Data;
 
 enum OperationResult
 {

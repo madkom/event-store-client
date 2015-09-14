@@ -2,11 +2,12 @@
 
 namespace EventStore\Client\Domain\Socket;
 
-use EventStore\Client\Domain\Socket\Communication\Communicable;
+use EventStore\Client\Domain\DomainException;
 use EventStore\Client\Domain\Socket\Communication\CommunicationFactory;
 use EventStore\Client\Domain\Socket\Message\MessageComposer;
 use EventStore\Client\Domain\Socket\Message\MessageDecomposer;
 use EventStore\Client\Domain\Socket\Message\SocketMessage;
+use Psr\Log\LoggerInterface;
 
 /**
  * Class StreamHandler
@@ -28,21 +29,28 @@ class StreamHandler
     /** @var  CommunicationFactory */
     private $communicationFactory;
 
+    /**
+     * @var LoggerInterface
+     */
+    private $logger;
+
     //@TODO multi-part-message
     private $currentMessage;
 
     /**
      * @param Stream               $stream
+     * @param LoggerInterface      $logger
      * @param MessageDecomposer    $messageDecomposer
      * @param MessageComposer      $messageComposer
      * @param CommunicationFactory $communicationFactory
      */
-    public function __construct(Stream $stream, MessageDecomposer $messageDecomposer, MessageComposer $messageComposer, CommunicationFactory $communicationFactory)
+    public function __construct(Stream $stream, LoggerInterface $logger, MessageDecomposer $messageDecomposer, MessageComposer $messageComposer, CommunicationFactory $communicationFactory)
     {
         $this->stream               = $stream;
         $this->messageDecomposer    = $messageDecomposer;
         $this->messageComposer      = $messageComposer;
         $this->communicationFactory = $communicationFactory;
+        $this->logger = $logger;
     }
 
     /**
@@ -61,7 +69,6 @@ class StreamHandler
         }
 
         $socketMessage = $this->messageDecomposer->decomposeMessage($data);
-
         $communicable  = $this->communicationFactory->create($socketMessage->getMessageType());
         $socketMessage = $communicable->handle($socketMessage);
         $respondToType = $communicable->sendResponseTo();
@@ -79,15 +86,21 @@ class StreamHandler
      * @param SocketMessage $socketMessage
      *
      * @return void
+     * @throws DomainException
      */
     public function sendMessage(SocketMessage $socketMessage)
     {
-        $communicable = $this->communicationFactory->create($socketMessage->getMessageType());
-        $socketMessage = $communicable->handle($socketMessage);
+        try {
+            $communicable = $this->communicationFactory->create($socketMessage->getMessageType());
 
-        $binaryMessage = $this->messageComposer->compose($socketMessage);
+            $socketMessage = $communicable->handle($socketMessage);
 
-        $this->stream->write($binaryMessage);
+            $binaryMessage = $this->messageComposer->compose($socketMessage);
+
+            $this->stream->write($binaryMessage);
+        }catch (\Exception $e) {
+            $this->logger->critical('Error during '. $socketMessage->getMessageType()->getType() . ' with id ' . $socketMessage->getCorrelationID() . '. Message Error: ' . $e->getMessage());
+        }
     }
 
 }

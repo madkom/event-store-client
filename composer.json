@@ -19,7 +19,8 @@
         "php": ">=5.5.0",
         "ramsey/uuid": "~2.8",
         "react/socket-client": "v0.4.3",
-        "TrafficCophp/ByteBuffer": "dev-master"
+        "TrafficCophp/ByteBuffer": "dev-master",
+        "psr/log": "1.0.0"
     },
     "require-dev": {
         "phpunit/phpunit": "@stable",

@@ -13,10 +13,11 @@ $dns = $dnsResolverFactory->createCached(null, $loop);
 
 $connector = new React\SocketClient\Connector($loop, $dns);
 
-$connector->create('127.0.0.1', 1113)->then(function (React\Stream\Stream $stream) {
+$resolvedConnection = $connector->create('127.0.0.1', 1113);
+$resolvedConnection->then(function (React\Stream\Stream $stream) {
 
     $streamAdapter = new \EventStore\Client\Infrastructure\ReactStream($stream);
-    $streamHandler = new \EventStore\Client\Domain\Socket\StreamHandler($streamAdapter, new \EventStore\Client\Domain\Socket\Message\MessageDecomposer(), new \EventStore\Client\Domain\Socket\Message\MessageComposer(), new \EventStore\Client\Domain\Socket\Communication\CommunicationFactory());
+    $streamHandler = new \EventStore\Client\Domain\Socket\StreamHandler($streamAdapter, new \EventStore\Client\Infrastructure\InMemoryLogger(), new \EventStore\Client\Domain\Socket\Message\MessageDecomposer(), new \EventStore\Client\Domain\Socket\Message\MessageComposer(), new \EventStore\Client\Domain\Socket\Communication\CommunicationFactory());
 
     $stream->on('data', function($data) use($streamHandler){
         $streamHandler->handle($data);
@@ -24,32 +25,50 @@ $connector->create('127.0.0.1', 1113)->then(function (React\Stream\Stream $strea
 
 //    $streamHandler->sendMessage(new \EventStore\Client\Domain\Socket\Message\SocketMessage(new \EventStore\Client\Domain\Socket\Message\MessageType(\EventStore\Client\Domain\Socket\Message\MessageType::PING), \EventStore\Client\Domain\Socket\Message\MessageConfiguration::FLAGS_NONE, null, null));
 
+    $readStreamEvent = new \EventStore\Client\Domain\Socket\Data\ReadStreamEvents();
+    $readStreamEvent->setEventStreamId('TestStream');
+    $readStreamEvent->setResolveLinkTos(false);
+    $readStreamEvent->setRequireMaster(false);
+    $readStreamEvent->setMaxCount(1000);
+    $readStreamEvent->setFromEventNumber(0);
+
 //    $streamHandler->sendMessage(
 //        new \EventStore\Client\Domain\Socket\Message\SocketMessage(
 //            new \EventStore\Client\Domain\Socket\Message\MessageType(\EventStore\Client\Domain\Socket\Message\MessageType::READ_STREAM_EVENTS_FORWARD),
 //            \EventStore\Client\Domain\Socket\Message\MessageConfiguration::FLAGS_NONE,
 //            null,
-//            ['event_stream_id' => 'TestStream', 'from_event_number' => 10, 'max_count' => 100])
+//            $readStreamEvent)
 //        );
 
-//    $stream->write('...');
+    $readAllEvent = new EventStore\Client\Domain\Socket\Data\ReadAllEvents();
+    $readAllEvent->setMaxCount(1000);
+    $readAllEvent->setRequireMaster(false);
+    $readAllEvent->setResolveLinkTos(true);
+    $readAllEvent->setCommitPosition(1000);
+    $readAllEvent->setPreparePosition(1000);
 
-//    $stream->write()
-//    $stream->emit(
-//
-//    );
+    $streamHandler->sendMessage(
+        new \EventStore\Client\Domain\Socket\Message\SocketMessage(
+            new \EventStore\Client\Domain\Socket\Message\MessageType(\EventStore\Client\Domain\Socket\Message\MessageType::READ_ALL_EVENTS_FORWARD),
+            \EventStore\Client\Domain\Socket\Message\MessageConfiguration::FLAGS_NONE,
+            null,
+            $readAllEvent)
+    );
 
 //    $stream->close();
 });
 
-$tmp = new EventStore\Client\Domain\Socket\Proxy\ReadStreamEvents();
-$tmp->setEventStreamId('dsad');
-$tmp->setFromEventNumber(2);
-$tmp->setMaxCount(100);
-$tmp->setResolveLinkTos(true);
-$tmp->setRequireMaster(false);
-//$tmp->
-echo 'a' . $tmp->serializeToString();
-die('a');
+//$tmp = new EventStore\Client\Domain\Socket\Data\ReadStreamEvents();
+//$tmp->setEventStreamId('dsad');
+//$tmp->setFromEventNumber(2);
+//$tmp->setMaxCount(100);
+//$tmp->setResolveLinkTos(true);
+//$tmp->setRequireMaster(false);
+//echo 'a' . $tmp->serializeToString();
+//die('a');
+try {
+    $loop->run();
 
-$loop->run();
+}catch (\Exception $e) {
+    echo $e->getMessage();
+}

@@ -17,4 +17,11 @@ interface Stream
      */
     public function write($binaryData);
 
+    /**
+     * Closes the connection
+     *
+     * @return void
+     */
+    public function closeConnection();
+
 }

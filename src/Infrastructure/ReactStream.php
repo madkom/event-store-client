@@ -35,5 +35,12 @@ class ReactStream implements Stream
         $this->reactStream->write($binaryData);
     }
 
+    /**
+     * @inheritDoc
+     */
+    public function closeConnection()
+    {
+        $this->reactStream->close();
+    }
 
 }
