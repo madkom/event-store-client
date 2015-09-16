@@ -15,26 +15,28 @@ class SocketMessage
 	private $messageType;
 
 	/** @var  string */
-	private $flag;
-
-	/** @var  string */
 	private $correlationID;
 
-	/** @var  mixed */
+	/** @var  \ProtobufMessage */
 	private $data;
+
+	/** @var Credentials  */
+	private $credentials;
 
 	/**
 	 * @param MessageType $messageType
-	 * @param string  $flag
-	 * @param string  $correlationID
-	 * @param string  $data
+	 * @param string      $correlationID
+	 * @param \ProtobufMessage $data
+	 * @param Credentials $credentials
+	 *
+	 * @internal param string $flag
 	 */
-	public function __construct(MessageType $messageType, $flag, $correlationID, $data)
+	public function __construct(MessageType $messageType, $correlationID, \ProtobufMessage $data = null, Credentials $credentials = null)
 	{
-		$this->messageType = $messageType;
-		$this->flag    = $flag;
+		$this->messageType 	= $messageType;
 		$this->correlationID = $correlationID;
-		$this->data    = $data;
+		$this->data    		= $data;
+		$this->credentials  = $credentials;
 	}
 
 	/**
@@ -46,7 +48,7 @@ class SocketMessage
 	 */
 	public function changeData($data)
 	{
-		return new static($this->messageType, $this->flag, $this->correlationID, $data);
+		return new static($this->messageType, $this->correlationID, $data, $this->credentials);
 	}
 
 	/**
@@ -58,7 +60,7 @@ class SocketMessage
 	 */
 	public function changeMessageType(MessageType $messageType)
 	{
-		return new static($messageType, $this->flag, $this->correlationID, $this->data);
+		return new static($messageType, $this->correlationID, $this->data, $this->credentials);
 	}
 
 	/**
@@ -68,15 +70,7 @@ class SocketMessage
 	{
 		return $this->messageType;
 	}
-
-	/**
-	 * @return string
-	 */
-	public function getFlag()
-	{
-		return $this->flag;
-	}
-
+	
 	/**
 	 * @return string
 	 */
@@ -86,11 +80,19 @@ class SocketMessage
 	}
 
 	/**
-	 * @return mixed
+	 * @return \ProtobufMessage
 	 */
 	public function getData()
 	{
 		return $this->data;
+	}
+
+	/**
+	 * @return Credentials
+	 */
+	public function getCredentials()
+	{
+		return $this->credentials;
 	}
 
 }

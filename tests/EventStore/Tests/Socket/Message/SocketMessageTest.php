@@ -14,15 +14,24 @@ use Prophecy\Argument;
 class SocketMessageTest extends PHPUnit_Framework_TestCase
 {
 
-    /** @var  MessageType */
+    /** @var  SocketMessage */
     private $socketMessage;
 
     private $messageType;
 
+    private $credentials;
+
+    private $protobufMessage;
+
     public function setUp()
     {
         $this->messageType = new MessageType(3);
-        $this->socketMessage = new SocketMessage($this->messageType, 'flag', 'correlation', 'someData');
+        $this->credentials = new \EventStore\Client\Domain\Socket\Message\Credentials('test', 'pass');
+
+        $protobufMessage   = $this->prophesize('\ProtobufMessage');
+        $this->protobufMessage = $protobufMessage->reveal();
+
+        $this->socketMessage = new SocketMessage($this->messageType, 'correlation', $this->protobufMessage, $this->credentials);
     }
 
     /**
@@ -31,9 +40,9 @@ class SocketMessageTest extends PHPUnit_Framework_TestCase
     public function should_return_values_it_was_created_with()
     {
         $this->assertEquals($this->socketMessage->getMessageType(), $this->messageType);
-        $this->assertEquals($this->socketMessage->getFlag(), 'flag');
+        $this->assertSame($this->socketMessage->getCredentials(), $this->credentials);
         $this->assertEquals($this->socketMessage->getCorrelationID(), 'correlation');
-        $this->assertEquals($this->socketMessage->getData(), 'someData');
+        $this->assertSame($this->socketMessage->getData(), $this->protobufMessage);
     }
 
     /**
@@ -41,13 +50,16 @@ class SocketMessageTest extends PHPUnit_Framework_TestCase
      */
     public function it_should_change_data()
     {
-        $socketMessage = $this->socketMessage->changeData(['test']);
+        $protobufMessage   = $this->prophesize('\ProtobufMessage');
+        $anotherProtobuf   = $protobufMessage->reveal();
+
+        $socketMessage = $this->socketMessage->changeData($anotherProtobuf);
         \PHPUnit_Framework_Assert::assertNotSame($this->socketMessage, $socketMessage);
 
         $this->assertEquals($socketMessage->getMessageType(), $this->messageType);
-        $this->assertEquals($socketMessage->getFlag(), 'flag');
+        $this->assertSame($socketMessage->getCredentials(), $this->credentials);
         $this->assertEquals($socketMessage->getCorrelationID(), 'correlation');
-        $this->assertEquals($socketMessage->getData(), ['test']);
+        $this->assertSame($socketMessage->getData(), $anotherProtobuf);
     }
 
     /**
@@ -61,9 +73,9 @@ class SocketMessageTest extends PHPUnit_Framework_TestCase
         \PHPUnit_Framework_Assert::assertNotSame($this->socketMessage, $socketMessage);
 
         $this->assertEquals($socketMessage->getMessageType(), $messageType);
-        $this->assertEquals($socketMessage->getFlag(), 'flag');
+        $this->assertSame($socketMessage->getCredentials(), $this->credentials);
         $this->assertEquals($socketMessage->getCorrelationID(), 'correlation');
-        $this->assertEquals($socketMessage->getData(), 'someData');
+        $this->assertSame($socketMessage->getData(), $this->protobufMessage);
     }
 
 }

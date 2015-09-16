@@ -18,32 +18,13 @@ class SubscriptionConfirmationHandler implements Communicable
     /**
      * @inheritDoc
      */
-    public function handle(SocketMessage $socketMessage)
+    public function handle(MessageType $messageType, $correlationID, $data)
     {
-        $data = new Data\SubscriptionConfirmation();
-        $data->parseFromString($socketMessage->getData());
-        $data->dump();
+        $dataObject = new Data\SubscriptionConfirmation();
+        $dataObject->parseFromString($data);
+        $dataObject->dump();
 
-        $socketMessage->changeData($data);
-
-        return $socketMessage;
+        return new SocketMessage($messageType, $correlationID, $dataObject);
     }
-
-    /**
-     * @inheritDoc
-     */
-    public function getMessageType()
-    {
-        return new MessageType(MessageType::READ_STREAM_EVENTS_FORWARD_COMPLETED);
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function sendResponseTo()
-    {
-        return null;
-    }
-
 
 }

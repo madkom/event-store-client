@@ -15,25 +15,14 @@ interface Communicable
 {
 
     /**
-     * @param SocketMessage $socketMessage
+     * @param MessageType $messageType
+     * @param string      $correlationID
+     * @param string      $data
      *
      * @return SocketMessage
-     */
-    public function handle(SocketMessage $socketMessage);
-
-    /**
-     * What kind of message is it
+     * @internal param SocketMessage $socketMessage
      *
-     * @return MessageType
      */
-    public function getMessageType();
-
-    /**
-     * What message type it should respond to.
-     * For example HeartBeatRequest message response to HeartBeatResponse
-     *
-     * @return null|MessageType
-     */
-    public function sendResponseTo();
+    public function handle(MessageType $messageType, $correlationID, $data);
 
 }

@@ -16,35 +16,11 @@ class PongHandler implements Communicable
 {
 
 	/**
-	 * @param SocketMessage $socketMessage
-	 *
-	 * @return SocketMessage
+	 * @inheritdoc
 	 */
-	public function handle(SocketMessage $socketMessage)
+	public function handle(MessageType $messageType, $correlationID, $data)
 	{
-		return $socketMessage;
+		return new SocketMessage($messageType, $correlationID);
 	}
-
-	/**
-	 * What kind of message is it
-	 *
-	 * @return MessageType
-	 */
-	public function getMessageType()
-	{
-		return new MessageType(MessageType::PONG);
-	}
-
-	/**
-	 * What message type it should respond to.
-	 * For example HeartBeatRequest message response to HeartBeatResponse
-	 *
-	 * @return null|MessageType
-	 */
-	public function sendResponseTo()
-	{
-		return null;
-	}
-
 
 }

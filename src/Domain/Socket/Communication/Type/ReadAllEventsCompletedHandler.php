@@ -16,42 +16,15 @@ class ReadAllEventsCompletedHandler implements Communicable
 {
 
     /**
-     * @param SocketMessage $socketMessage
-     *
-     * @return SocketMessage
+     * @inheritdoc
      */
-    public function handle(SocketMessage $socketMessage)
+    public function handle(MessageType $messageType, $correlationID, $data)
     {
-        $data = new Data\ReadAllEventsCompleted();
-        $data->parseFromString($socketMessage->getData());
-        $data->dump();
+        $dataObject = new Data\ReadAllEventsCompleted();
+        $dataObject->parseFromString($data);
+        $dataObject->dump();
 
-        $socketMessage->changeData($data);
-
-        return $socketMessage;
+        return new SocketMessage($messageType, $correlationID, $dataObject);
     }
-
-    /**
-     * What kind of message is it
-     *
-     * @return MessageType
-     */
-    public function getMessageType()
-    {
-        return new MessageType(MessageType::READ_STREAM_EVENTS_FORWARD_COMPLETED);
-    }
-
-    /**
-     * What message type it should respond to.
-     * For example HeartBeatRequest message response to HeartBeatResponse
-     *
-     * @return null|MessageType
-     */
-    public function sendResponseTo()
-    {
-        return null;
-    }
-
-
 
 }

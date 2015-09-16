@@ -18,31 +18,13 @@ class StreamEventAppearedHandler implements Communicable
     /**
      * @inheritDoc
      */
-    public function handle(SocketMessage $socketMessage)
+    public function handle(MessageType $messageType, $correlationID, $data)
     {
-        $data = new Data\StreamEventAppeared();
-        $data->parseFromString($socketMessage->getData());
-        $data->dump();
+        $dataObject = new Data\StreamEventAppeared();
+        $dataObject->parseFromString($data);
+        $dataObject->dump();
 
-        $socketMessage->changeData($data);
-
-        return $socketMessage;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function getMessageType()
-    {
-        return new MessageType(MessageType::READ_STREAM_EVENTS_FORWARD_COMPLETED);
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function sendResponseTo()
-    {
-        return null;
+        return new SocketMessage($messageType, $correlationID, $dataObject);
     }
 
 }

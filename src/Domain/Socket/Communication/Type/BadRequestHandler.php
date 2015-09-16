@@ -17,25 +17,9 @@ class BadRequestHandler implements Communicable
     /**
      * @inheritDoc
      */
-    public function handle(SocketMessage $socketMessage)
+    public function handle(MessageType $messageType, $correlationID, $data)
     {
-        return $socketMessage;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function getMessageType()
-    {
-        return new MessageType(MessageType::BAD_REQUEST);
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function sendResponseTo()
-    {
-        return null;
+        return new SocketMessage($messageType, $correlationID, $data);
     }
 
 }

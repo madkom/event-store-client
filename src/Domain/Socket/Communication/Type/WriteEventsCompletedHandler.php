@@ -18,31 +18,13 @@ class WriteEventsCompletedHandler implements Communicable
     /**
      * @inheritDoc
      */
-    public function handle(SocketMessage $socketMessage)
+    public function handle(MessageType $messageType, $correlationID, $data)
     {
-        $data = new Data\WriteEventsCompleted();
-        $data->parseFromString($socketMessage->getData());
-        $data->dump();
+        $dataObject = new Data\WriteEventsCompleted();
+        $dataObject->parseFromString($data);
+        $dataObject->dump();
 
-        $socketMessage->changeData($data);
-
-        return $socketMessage;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function getMessageType()
-    {
-        return new MessageType(MessageType::READ_STREAM_EVENTS_FORWARD_COMPLETED);
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function sendResponseTo()
-    {
-        return null;
+        return new SocketMessage($messageType, $correlationID, $dataObject);
     }
 
 }

@@ -19,9 +19,6 @@ class StreamHandlerTest extends PHPUnit_Framework_TestCase
     /** @var  \EventStore\Client\Domain\Socket\Message\MessageComposer */
     private $messageComposer;
 
-    /** @var  \EventStore\Client\Domain\Socket\Communication\CommunicationFactory */
-    private $communicationFactory;
-
     /** @var  \EventStore\Client\Domain\Socket\StreamHandler */
     private $streamHandler;
 
@@ -41,10 +38,9 @@ class StreamHandlerTest extends PHPUnit_Framework_TestCase
         $this->stream            = $this->internalProphet->prophesize('EventStore\Client\Domain\Socket\Stream');
         $this->messageDecomposer = $this->internalProphet->prophesize('EventStore\Client\Domain\Socket\Message\MessageDecomposer');
         $this->messageComposer   = $this->internalProphet->prophesize('EventStore\Client\Domain\Socket\Message\MessageComposer');
-        $this->communicationFactory = $this->internalProphet->prophesize('EventStore\Client\Domain\Socket\Communication\CommunicationFactory');
         $logger                  = $this->internalProphet->prophesize('Psr\Log\LoggerInterface');
 
-        $this->streamHandler = new \EventStore\Client\Domain\Socket\StreamHandler($this->stream->reveal(), $logger->reveal(), $this->messageDecomposer->reveal(), $this->messageComposer->reveal(), $this->communicationFactory->reveal());
+        $this->streamHandler = new \EventStore\Client\Domain\Socket\StreamHandler($this->stream->reveal(), $logger->reveal(), $this->messageDecomposer->reveal(), $this->messageComposer->reveal());
 
 
         $messageType = $this->internalProphet->prophesize('EventStore\Client\Domain\Socket\Message\MessageType');
@@ -53,10 +49,6 @@ class StreamHandlerTest extends PHPUnit_Framework_TestCase
         $socketMessage = $this->internalProphet->prophesize('EventStore\Client\Domain\Socket\Message\SocketMessage');
         $socketMessage->getMessageType()->willReturn($messageType);
         $this->socketMessage = $socketMessage;
-
-        $communicable = $this->internalProphet->prophesize('EventStore\Client\Domain\Socket\Communication\Communicable');
-        $communicable->handle($socketMessage)->willReturn($socketMessage);
-        $this->communicable = $communicable;
     }
 
     /**
@@ -72,12 +64,12 @@ class StreamHandlerTest extends PHPUnit_Framework_TestCase
      */
     public function it_should_handle_without_response()
     {
-        $this->communicable->sendResponseTo()->willReturn(null);
-        $this->communicable = $this->communicable->reveal();
+        $messageType = $this->internalProphet->prophesize('EventStore\Client\Domain\Socket\Message\MessageType');
+        $messageType->getType()->willReturn(\EventStore\Client\Domain\Socket\Message\MessageType::HEARTBEAT_RESPONSE);
+        $this->socketMessage->getMessageType()->willReturn($messageType->reveal());
         $this->socketMessage->reveal();
 
         $this->messageDecomposer->decomposeMessage('test')->willReturn($this->socketMessage);
-        $this->communicationFactory->create($this->messageType)->willReturn($this->communicable);
 
         PHPUnit_Framework_Assert::assertInstanceOf('EventStore\Client\Domain\Socket\Message\SocketMessage', $this->streamHandler->handle('test'));
     }
@@ -87,31 +79,16 @@ class StreamHandlerTest extends PHPUnit_Framework_TestCase
      */
     public function it_should_handle_with_response()
     {
-        $this->messageDecomposer->decomposeMessage('test')->willReturn($this->socketMessage);
-        $this->communicationFactory->create($this->messageType)->willReturn($this->communicable);
-
-        $this->communicable->sendResponseTo()->willReturn($this->messageType);
-        $this->communicable = $this->communicable->reveal();
-
-
         $messageTypeChanged = $this->internalProphet->prophesize('EventStore\Client\Domain\Socket\Message\MessageType');
+        $messageTypeChanged->getType()->willReturn(\EventStore\Client\Domain\Socket\Message\MessageType::HEARTBEAT_REQUEST);
         $messageTypeChanged = $messageTypeChanged->reveal();
+        $this->socketMessage->getMessageType()->willReturn($messageTypeChanged);
+        $this->socketMessage->getCorrelationID()->willReturn('some');
 
-        $socketMessageChanged = $this->internalProphet->prophesize('EventStore\Client\Domain\Socket\Message\SocketMessage');
-        $socketMessageChanged->getMessageType()->willReturn($messageTypeChanged);
-        $socketMessageChanged->reveal();
+        $this->messageDecomposer->decomposeMessage('test')->willReturn($this->socketMessage->reveal());
 
 
-        $this->socketMessage->changeMessageType($this->messageType)->willReturn($socketMessageChanged);
-        $this->socketMessage->reveal();
-
-        $communicable = $this->internalProphet->prophesize('EventStore\Client\Domain\Socket\Communication\Communicable');
-        $communicable->handle($socketMessageChanged)->willReturn($socketMessageChanged);
-        $communicable->reveal();
-
-        $this->communicationFactory->create($messageTypeChanged)->willReturn($communicable);
-
-        $this->messageComposer->compose($socketMessageChanged)->willReturn('someBinary');
+        $this->messageComposer->compose(\Prophecy\Argument::type('EventStore\Client\Domain\Socket\Message\SocketMessage'))->willReturn('someBinary');
         $this->stream->write('someBinary')->shouldBeCalledTimes(1);
         $this->stream->reveal();
 
@@ -123,9 +100,6 @@ class StreamHandlerTest extends PHPUnit_Framework_TestCase
      */
     public function it_should_send_message()
     {
-        $this->communicationFactory->create($this->messageType)->willReturn($this->communicable);
-        $this->communicable->handle($this->socketMessage)->willReturn($this->socketMessage);
-        $this->communicable  = $this->communicable->reveal();
         $this->socketMessage = $this->socketMessage->reveal();
 
         $this->messageComposer->compose($this->socketMessage)->willReturn('binary');

@@ -6,6 +6,7 @@ use EventStore\Client\Domain\DomainException;
 use EventStore\Client\Domain\Socket\Communication\CommunicationFactory;
 use EventStore\Client\Domain\Socket\Message\MessageComposer;
 use EventStore\Client\Domain\Socket\Message\MessageDecomposer;
+use EventStore\Client\Domain\Socket\Message\MessageType;
 use EventStore\Client\Domain\Socket\Message\SocketMessage;
 use Psr\Log\LoggerInterface;
 
@@ -26,9 +27,6 @@ class StreamHandler
     /** @var  MessageComposer */
     private $messageComposer;
 
-    /** @var  CommunicationFactory */
-    private $communicationFactory;
-
     /**
      * @var LoggerInterface
      */
@@ -42,14 +40,12 @@ class StreamHandler
      * @param LoggerInterface      $logger
      * @param MessageDecomposer    $messageDecomposer
      * @param MessageComposer      $messageComposer
-     * @param CommunicationFactory $communicationFactory
      */
-    public function __construct(Stream $stream, LoggerInterface $logger, MessageDecomposer $messageDecomposer, MessageComposer $messageComposer, CommunicationFactory $communicationFactory)
+    public function __construct(Stream $stream, LoggerInterface $logger, MessageDecomposer $messageDecomposer, MessageComposer $messageComposer)
     {
         $this->stream               = $stream;
         $this->messageDecomposer    = $messageDecomposer;
         $this->messageComposer      = $messageComposer;
-        $this->communicationFactory = $communicationFactory;
         $this->logger = $logger;
     }
 
@@ -69,12 +65,10 @@ class StreamHandler
         }
 
         $socketMessage = $this->messageDecomposer->decomposeMessage($data);
-        $communicable  = $this->communicationFactory->create($socketMessage->getMessageType());
-        $socketMessage = $communicable->handle($socketMessage);
-        $respondToType = $communicable->sendResponseTo();
 
-        if(!is_null($respondToType)) {
-            $this->sendMessage($socketMessage->changeMessageType($respondToType));
+        //If heartbeat then response
+        if($socketMessage->getMessageType()->getType() === MessageType::HEARTBEAT_REQUEST) {
+            $this->sendMessage(new SocketMessage(new MessageType(MessageType::HEARTBEAT_RESPONSE), $socketMessage->getCorrelationID()));
         }
 
         return $socketMessage;
@@ -91,10 +85,6 @@ class StreamHandler
     public function sendMessage(SocketMessage $socketMessage)
     {
         try {
-            $communicable = $this->communicationFactory->create($socketMessage->getMessageType());
-
-            $socketMessage = $communicable->handle($socketMessage);
-
             $binaryMessage = $this->messageComposer->compose($socketMessage);
 
             $this->stream->write($binaryMessage);

@@ -3,6 +3,7 @@
 namespace EventStore\Client\Domain\Socket\Message;
 
 
+use EventStore\Client\Domain\Socket\Communication\CommunicationFactory;
 use TrafficCophp\ByteBuffer\Buffer;
 
 /**
@@ -12,6 +13,17 @@ use TrafficCophp\ByteBuffer\Buffer;
  */
 class MessageDecomposer
 {
+
+	/** @var  CommunicationFactory */
+	private $communicationFactory;
+
+	/**
+	 * @param CommunicationFactory $communicationFactory
+	 */
+	public function __construct(CommunicationFactory $communicationFactory)
+	{
+		$this->communicationFactory = $communicationFactory;
+	}
 
 	/**
 	 * Decomposes binary message, which comes from the stream
@@ -34,9 +46,8 @@ class MessageDecomposer
 		$correlationID = bin2hex($buffer->read(MessageConfiguration::CORRELATION_ID_OFFSET, MessageConfiguration::CORRELATION_ID_LENGTH));
 		$data = $buffer->read(MessageConfiguration::DATA_OFFSET, $messageLength - MessageConfiguration::HEADER_LENGTH);
 
-
-		return new SocketMessage($messageType, $flag, $correlationID, $data);
-
+		$communicable = $this->communicationFactory->create($messageType);
+		return $communicable->handle($messageType, $correlationID, $data);
 	}
 
 

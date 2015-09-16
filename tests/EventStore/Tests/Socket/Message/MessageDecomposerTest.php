@@ -13,12 +13,18 @@ use TrafficCophp\ByteBuffer\Buffer;
 class MessageDecomposerTest extends \PHPUnit_Framework_TestCase
 {
 
-    /** @var  MessageDecomposer */
     private $messageDecomposer;
 
     public function setUp()
     {
-        $this->messageDecomposer = new MessageDecomposer();
+        $communicable = $this->prophesize('EventStore\Client\Domain\Socket\Communication\Type\PongHandler');
+        $communicable->handle(\Prophecy\Argument::type('EventStore\Client\Domain\Socket\Message\MessageType'), '12350000000000000000000000000000', '')->willReturn('done');
+
+        $communicationFactory = $this->prophesize('EventStore\Client\Domain\Socket\Communication\CommunicationFactory');
+        $communicationFactory->create(\Prophecy\Argument::type('EventStore\Client\Domain\Socket\Message\MessageType'))->willReturn($communicable->reveal());
+
+
+        $this->messageDecomposer = new MessageDecomposer($communicationFactory->reveal());
     }
 
     /**
@@ -34,13 +40,7 @@ class MessageDecomposerTest extends \PHPUnit_Framework_TestCase
         $buffer->writeInt8(MessageConfiguration::FLAGS_NONE, MessageConfiguration::FLAG_OFFSET);
         $buffer->write(hex2bin('12350000000000000000000000000000'), MessageConfiguration::CORRELATION_ID_OFFSET);
 
-        $decomposedMessage = $this->messageDecomposer->decomposeMessage((string)$buffer);
-
-
-        \PHPUnit_Framework_Assert::assertEquals(MessageType::PING, $decomposedMessage->getMessageType()->getType());
-        \PHPUnit_Framework_TestCase::assertEquals(MessageConfiguration::FLAGS_NONE, $decomposedMessage->getFlag());
-        \PHPUnit_Framework_TestCase::assertEquals('12350000000000000000000000000000', $decomposedMessage->getCorrelationID());
-        \PHPUnit_Framework_TestCase::assertEmpty($decomposedMessage->getData());
+        PHPUnit_Framework_Assert::assertEquals('done', $this->messageDecomposer->decomposeMessage((string)$buffer));
     }
 
 

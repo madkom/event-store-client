@@ -7,8 +7,8 @@ use EventStore\Client\Domain\Socket\Message\MessageType;
 use EventStore\Client\Domain\Socket\Message\SocketMessage;
 
 /**
- * Class HeartBeatRequest
- * @package EventStore\Client\Domain\Socket\Communication\Type
+ * Class HeartBeatResponse
+ * @package EventStore\Client\Domain\Socket\Communication
  * @author  Dariusz Gafka <dgafka.mail@gmail.com>
  */
 class HeartBeatRequestHandler implements Communicable
@@ -17,25 +17,9 @@ class HeartBeatRequestHandler implements Communicable
     /**
      * @inheritDoc
      */
-    public function handle(SocketMessage $socketMessage)
+    public function handle(MessageType $messageType, $correlationID, $data)
     {
-        return $socketMessage;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function getMessageType()
-    {
-        return new MessageType(MessageType::HEARTBEAT_REQUEST);
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function sendResponseTo()
-    {
-        return new MessageType(MessageType::HEARTBEAT_RESPONSE);
+        return new SocketMessage($messageType, $correlationID);
     }
 
 }

@@ -27,37 +27,17 @@ class CommunicationFactory
 
         switch($messageType->getType()) {
 
-            case MessageType::PING:
-                echo "\nping\n";
-                $communicable = new Type\PingHandler();
-                break;
             case MessageType::PONG:
                 echo "\npong\n";
                 $communicable = new Type\PongHandler();
                 break;
-            case MessageType::HEARTBEAT_RESPONSE:
-//                echo "hearbeat_response\n";
-                $communicable = new Type\HeartBeatResponseHandler();
-                break;
             case MessageType::HEARTBEAT_REQUEST:
-//                echo "hearbeat_request\n";
+//                echo "hearbeat_response\n";
                 $communicable = new Type\HeartBeatRequestHandler();
-                break;
-            case MessageType::READ_STREAM_EVENTS_FORWARD:
-                echo "Read stream events forward\n";
-                $communicable = new Type\ReadStreamEventsHandler();
                 break;
             case MessageType::READ_STREAM_EVENTS_FORWARD_COMPLETED:
                 echo "Read stream events completed\n";
                 $communicable = new Type\ReadStreamEventsCompletedHandler();
-                break;
-            case MessageType::READ_ALL_EVENTS_FORWARD:
-                echo "Read all events forward\n";
-                $communicable = new Type\ReadAllEventsHandler();
-                break;
-            case MessageType::READ_ALL_EVENTS_BACKWARD:
-                echo "Read all events backward\n";
-                $communicable = new Type\ReadAllEventsHandler();
                 break;
             case MessageType::READ_ALL_EVENTS_FORWARD_COMPLETED:
                 echo "Read all events forward completed\n";
@@ -67,17 +47,9 @@ class CommunicationFactory
                 echo "Read all events backward completed\n";
                 $communicable = new Type\ReadAllEventsCompletedHandler();
                 break;
-            case MessageType::SUBSCRIBE_TO_STREAM:
-                echo "Subscribe to stream\n";
-                $communicable = new Type\SubscribeToStreamHandler();
-                break;
             case MessageType::SUBSCRIPTION_CONFIRMATION:
                 echo "Subscription confirmation";
                 $communicable = new Type\SubscriptionConfirmationHandler();
-                break;
-            case MessageType::WRITE_EVENTS:
-                echo "Write Events\n";
-                $communicable = new Type\WriteEventsHandler();
                 break;
             case MessageType::BAD_REQUEST:
                 echo "Bad Request\n";
@@ -90,10 +62,6 @@ class CommunicationFactory
             case MessageType::STREAM_EVENT_APPEARED:
                 echo "Stream event appeared\n";
                 $communicable = new Type\StreamEventAppearedHandler();
-                break;
-            case MessageType::UNSUBSCRIBE_FROM_STREAM:
-                echo "Unsubscribed from stream\n";
-                $communicable = new Type\UnsubscribeFromStreamHandler();
                 break;
             default:
                 throw new \RuntimeException('Unsupported message type ' . $messageType->getType());

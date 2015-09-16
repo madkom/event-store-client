@@ -46,7 +46,9 @@ class MessageComposer
 
         //Correlation + flag length + command length
         $messageLength = MessageConfiguration::HEADER_LENGTH;
+
         if ($dataToSend) {
+            $dataToSend    = $dataToSend->serializeToString();
             $messageLength += strlen($dataToSend);
         }
 
