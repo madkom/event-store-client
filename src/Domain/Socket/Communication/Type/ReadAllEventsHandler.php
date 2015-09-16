@@ -13,7 +13,7 @@ use EventStore\Client\Domain\Socket\Data;
  * @package EventStore\Client\Domain\Socket\Communication\Type
  * @author  Dariusz Gafka <d.gafka@madkom.pl>
  */
-class ReadAllEvents implements Communicable
+class ReadAllEventsHandler implements Communicable
 {
 
     /**

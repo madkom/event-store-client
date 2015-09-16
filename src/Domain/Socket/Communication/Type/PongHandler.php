@@ -12,7 +12,7 @@ use EventStore\Client\Domain\Socket\Message\SocketMessage;
  * @package EventStore\Client\Domain\Socket\Communication\Type
  * @author Dariusz Gafka <dgafka.mail@gmail.com>
  */
-class Pong implements Communicable
+class PongHandler implements Communicable
 {
 
 	/**

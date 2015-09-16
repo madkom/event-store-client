@@ -5,14 +5,13 @@ namespace EventStore\Client\Domain\Socket\Communication\Type;
 use EventStore\Client\Domain\Socket\Communication\Communicable;
 use EventStore\Client\Domain\Socket\Message\MessageType;
 use EventStore\Client\Domain\Socket\Message\SocketMessage;
-use EventStore\Client\Domain\Socket\Data;
 
 /**
- * Class SubscriptionConfirmation
+ * Class BadRequest
  * @package EventStore\Client\Domain\Socket\Communication\Type
  * @author  Dariusz Gafka <d.gafka@madkom.pl>
  */
-class SubscriptionConfirmation implements Communicable
+class BadRequestHandler implements Communicable
 {
 
     /**
@@ -20,12 +19,6 @@ class SubscriptionConfirmation implements Communicable
      */
     public function handle(SocketMessage $socketMessage)
     {
-        $data = new Data\SubscriptionConfirmation();
-        $data->parseFromString($socketMessage->getData());
-        $data->dump();
-
-        $socketMessage->changeData($data);
-
         return $socketMessage;
     }
 
@@ -34,7 +27,7 @@ class SubscriptionConfirmation implements Communicable
      */
     public function getMessageType()
     {
-        return new MessageType(MessageType::READ_STREAM_EVENTS_FORWARD_COMPLETED);
+        return new MessageType(MessageType::BAD_REQUEST);
     }
 
     /**
@@ -44,6 +37,5 @@ class SubscriptionConfirmation implements Communicable
     {
         return null;
     }
-
 
 }

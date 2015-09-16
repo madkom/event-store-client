@@ -9,11 +9,11 @@ use EventStore\Client\Domain\Socket\Message\SocketMessage;
 use EventStore\Client\Domain\Socket\Data;
 
 /**
- * Class SubsribeToStream
+ * Class UnsubscribeFromStream
  * @package EventStore\Client\Domain\Socket\Communication\Type
  * @author  Dariusz Gafka <d.gafka@madkom.pl>
  */
-class SubscribeToStream implements Communicable
+class UnsubscribeFromStreamHandler implements Communicable
 {
 
     /**
@@ -21,7 +21,7 @@ class SubscribeToStream implements Communicable
      */
     public function handle(SocketMessage $socketMessage)
     {
-        if(!($socketMessage->getData() instanceof Data\SubscribeToStream)) {
+        if(!($socketMessage->getData() instanceof Data\UnsubscribeFromStream)) {
             throw new DomainException('Passed data in socket message isn\'t type of Data\ReadStreamEvents.');
         }
 
@@ -44,5 +44,6 @@ class SubscribeToStream implements Communicable
     {
         return null;
     }
+
 
 }

@@ -2,16 +2,19 @@
 
 namespace EventStore\Client\Domain\Socket\Communication\Type;
 
+
+use EventStore\Client\Domain\DomainException;
 use EventStore\Client\Domain\Socket\Communication\Communicable;
 use EventStore\Client\Domain\Socket\Message\MessageType;
 use EventStore\Client\Domain\Socket\Message\SocketMessage;
+use EventStore\Client\Domain\Socket\Data;
 
 /**
- * Class HeartBeatRequest
+ * Class WriteEventsHandler
  * @package EventStore\Client\Domain\Socket\Communication\Type
- * @author  Dariusz Gafka <dgafka.mail@gmail.com>
+ * @author  Dariusz Gafka <d.gafka@madkom.pl>
  */
-class HeartBeatRequest implements Communicable
+class WriteEventsHandler implements Communicable
 {
 
     /**
@@ -19,7 +22,14 @@ class HeartBeatRequest implements Communicable
      */
     public function handle(SocketMessage $socketMessage)
     {
-        return $socketMessage;
+        if(!($socketMessage->getData() instanceof Data\WriteEvents)) {
+            throw new DomainException('Passed data in socket message isn\'t type of Data\ReadStreamEvents.');
+        }
+
+        $data = $socketMessage->getData();
+
+
+        return $socketMessage->changeData($data->serializeToString());
     }
 
     /**
@@ -27,7 +37,7 @@ class HeartBeatRequest implements Communicable
      */
     public function getMessageType()
     {
-        return new MessageType(MessageType::HEARTBEAT_REQUEST);
+        return new MessageType(MessageType::WRITE_EVENTS);
     }
 
     /**
@@ -35,7 +45,7 @@ class HeartBeatRequest implements Communicable
      */
     public function sendResponseTo()
     {
-        return new MessageType(MessageType::HEARTBEAT_RESPONSE);
+        return null;
     }
 
 }

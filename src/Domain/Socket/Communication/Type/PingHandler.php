@@ -2,49 +2,48 @@
 
 namespace EventStore\Client\Domain\Socket\Communication\Type;
 
-use EventStore\Client\Domain\DomainException;
 use EventStore\Client\Domain\Socket\Communication\Communicable;
 use EventStore\Client\Domain\Socket\Message\MessageType;
 use EventStore\Client\Domain\Socket\Message\SocketMessage;
-use EventStore\Client\Domain\Socket\Data;
 
 /**
- * Class ReadStreamEventsForward
+ * Class Ping
  *
  * @package EventStore\Client\Domain\Socket\Communication\Type
  * @author Dariusz Gafka <dgafka.mail@gmail.com>
  */
-class ReadStreamEvents implements Communicable
+class PingHandler implements Communicable
 {
 
 	/**
-	 * @inheritDoc
+	 * @param SocketMessage $socketMessage
+	 *
+	 * @return SocketMessage
 	 */
 	public function handle(SocketMessage $socketMessage)
 	{
-		if(!($socketMessage->getData() instanceof Data\ReadStreamEvents)) {
-			throw new DomainException('Passed data in socket message isn\'t type of Data\ReadStreamEvents.');
-		}
-
-		$data = $socketMessage->getData();
-		return $socketMessage->changeData($data->serializeToString());
+		return $socketMessage;
 	}
 
 	/**
-	 * @inheritDoc
+	 * What kind of message is it
+	 *
+	 * @return MessageType
 	 */
 	public function getMessageType()
 	{
-		return new MessageType(MessageType::READ_STREAM_EVENTS_FORWARD);
+		return new MessageType(MessageType::PING);
 	}
 
 	/**
-	 * @inheritDoc
+	 * What message type it should respond to.
+	 * For example HeartBeatRequest message response to HeartBeatResponse
+	 *
+	 * @return null|MessageType
 	 */
 	public function sendResponseTo()
 	{
 		return null;
 	}
-
 
 }

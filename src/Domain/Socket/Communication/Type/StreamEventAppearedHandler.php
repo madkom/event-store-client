@@ -8,21 +8,19 @@ use EventStore\Client\Domain\Socket\Message\SocketMessage;
 use EventStore\Client\Domain\Socket\Data;
 
 /**
- * Class ReadAllEventsForwardCompleted
+ * Class WriteEventsCompleted
  * @package EventStore\Client\Domain\Socket\Communication\Type
  * @author  Dariusz Gafka <d.gafka@madkom.pl>
  */
-class ReadAllEventsCompleted implements Communicable
+class StreamEventAppearedHandler implements Communicable
 {
 
     /**
-     * @param SocketMessage $socketMessage
-     *
-     * @return SocketMessage
+     * @inheritDoc
      */
     public function handle(SocketMessage $socketMessage)
     {
-        $data = new Data\ReadAllEventsCompleted();
+        $data = new Data\StreamEventAppeared();
         $data->parseFromString($socketMessage->getData());
         $data->dump();
 
@@ -32,9 +30,7 @@ class ReadAllEventsCompleted implements Communicable
     }
 
     /**
-     * What kind of message is it
-     *
-     * @return MessageType
+     * @inheritDoc
      */
     public function getMessageType()
     {
@@ -42,16 +38,11 @@ class ReadAllEventsCompleted implements Communicable
     }
 
     /**
-     * What message type it should respond to.
-     * For example HeartBeatRequest message response to HeartBeatResponse
-     *
-     * @return null|MessageType
+     * @inheritDoc
      */
     public function sendResponseTo()
     {
         return null;
     }
-
-
 
 }

@@ -2,16 +2,18 @@
 
 namespace EventStore\Client\Domain\Socket\Communication\Type;
 
+
 use EventStore\Client\Domain\Socket\Communication\Communicable;
 use EventStore\Client\Domain\Socket\Message\MessageType;
 use EventStore\Client\Domain\Socket\Message\SocketMessage;
+use EventStore\Client\Domain\Socket\Data;
 
 /**
- * Class HeartBeatResponse
- * @package EventStore\Client\Domain\Socket\Communication
- * @author  Dariusz Gafka <dgafka.mail@gmail.com>
+ * Class ReadStreamEventsForwardCompleted
+ * @package EventStore\Client\Domain\Socket\Communication\Type
+ * @author  Dariusz Gafka <d.gafka@madkom.pl>
  */
-class HeartBeatResponse implements Communicable
+class ReadStreamEventsCompletedHandler implements Communicable
 {
 
     /**
@@ -19,6 +21,12 @@ class HeartBeatResponse implements Communicable
      */
     public function handle(SocketMessage $socketMessage)
     {
+        $data = new Data\ReadStreamEventsCompleted();
+        $data->parseFromString($socketMessage->getData());
+        $data->dump();
+
+        $socketMessage->changeData($data);
+
         return $socketMessage;
     }
 
@@ -27,7 +35,7 @@ class HeartBeatResponse implements Communicable
      */
     public function getMessageType()
     {
-        return new MessageType(MessageType::HEARTBEAT_RESPONSE);
+        return new MessageType(MessageType::READ_STREAM_EVENTS_FORWARD_COMPLETED);
     }
 
     /**
@@ -35,7 +43,8 @@ class HeartBeatResponse implements Communicable
      */
     public function sendResponseTo()
     {
-        null;
+        return null;
     }
+
 
 }
