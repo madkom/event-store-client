@@ -26,19 +26,19 @@ $resolvedConnection->then(function (React\Stream\Stream $stream) {
 //    $streamHandler->sendMessage(new \EventStore\Client\Domain\Socket\Message\SocketMessage(new \EventStore\Client\Domain\Socket\Message\MessageType(\EventStore\Client\Domain\Socket\Message\MessageType::PING), \EventStore\Client\Domain\Socket\Message\MessageConfiguration::FLAGS_NONE, null, null));
 
     $readStreamEvent = new \EventStore\Client\Domain\Socket\Data\ReadStreamEvents();
-    $readStreamEvent->setEventStreamId('TestStream');
+    $readStreamEvent->setEventStreamId('TestStream2');
     $readStreamEvent->setResolveLinkTos(false);
     $readStreamEvent->setRequireMaster(false);
     $readStreamEvent->setMaxCount(1000);
     $readStreamEvent->setFromEventNumber(0);
 
-//    $streamHandler->sendMessage(
-//        new \EventStore\Client\Domain\Socket\Message\SocketMessage(
-//            new \EventStore\Client\Domain\Socket\Message\MessageType(\EventStore\Client\Domain\Socket\Message\MessageType::READ_STREAM_EVENTS_FORWARD),
-//            \EventStore\Client\Domain\Socket\Message\MessageConfiguration::FLAGS_NONE,
-//            null,
-//            $readStreamEvent)
-//        );
+    $streamHandler->sendMessage(
+        new \EventStore\Client\Domain\Socket\Message\SocketMessage(
+            new \EventStore\Client\Domain\Socket\Message\MessageType(\EventStore\Client\Domain\Socket\Message\MessageType::READ_STREAM_EVENTS_FORWARD),
+            \EventStore\Client\Domain\Socket\Message\MessageConfiguration::FLAGS_NONE,
+            null,
+            $readStreamEvent)
+        );
 
 //    $readAllEvent = new EventStore\Client\Domain\Socket\Data\ReadAllEvents();
 //    $readAllEvent->setMaxCount(1000);
@@ -55,19 +55,38 @@ $resolvedConnection->then(function (React\Stream\Stream $stream) {
 //            $readAllEvent)
 //    );
 
-    $subscribeToStream = new \EventStore\Client\Domain\Socket\Data\SubscribeToStream();
-    $subscribeToStream->setEventStreamId('TestStream');
-    $subscribeToStream->setResolveLinkTos(true);
+//    $subscribeToStream = new \EventStore\Client\Domain\Socket\Data\SubscribeToStream();
+//    $subscribeToStream->setEventStreamId('TestStream');
+//    $subscribeToStream->setResolveLinkTos(true);
+//
+//    $streamHandler->sendMessage(
+//        new \EventStore\Client\Domain\Socket\Message\SocketMessage(
+//            new \EventStore\Client\Domain\Socket\Message\MessageType(\EventStore\Client\Domain\Socket\Message\MessageType::SUBSCRIBE_TO_STREAM),
+//            \EventStore\Client\Domain\Socket\Message\MessageConfiguration::FLAGS_NONE,
+//            null,
+//            $subscribeToStream)
+//    );
+
+    $event = new \EventStore\Client\Domain\Socket\Data\NewEvent();
+    $event->setData(json_encode(['test' => 'bla']));
+    $event->setEventType('testType');
+    $event->setEventId(hex2bin(md5('12323')));
+    $event->setDataContentType(1);
+    $event->setMetadataContentType(2);
+
+    $writeEvents = new \EventStore\Client\Domain\Socket\Data\WriteEvents();
+    $writeEvents->appendEvents($event);
+    $writeEvents->setEventStreamId('TestStream2');
+    $writeEvents->setExpectedVersion(-1);
+    $writeEvents->setRequireMaster(false);
 
     $streamHandler->sendMessage(
         new \EventStore\Client\Domain\Socket\Message\SocketMessage(
-            new \EventStore\Client\Domain\Socket\Message\MessageType(\EventStore\Client\Domain\Socket\Message\MessageType::SUBSCRIBE_TO_STREAM),
+            new \EventStore\Client\Domain\Socket\Message\MessageType(\EventStore\Client\Domain\Socket\Message\MessageType::WRITE_EVENTS),
             \EventStore\Client\Domain\Socket\Message\MessageConfiguration::FLAGS_NONE,
             null,
-            $subscribeToStream)
+            $writeEvents)
     );
-
-
 
 //    $stream->close();
 });

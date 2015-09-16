@@ -20,11 +20,24 @@ class MessageType
 	const PONG = 0x04;
 
 
-	//130
 //	Turned off for some reason
 //	const CREATE_STREAM = 0x80,
 //	const CREATE_STREAM_COMPLETED = 0x81;
+	//130
+	/**
+	 * Used with data:
+	 * EventStore\Client\Domain\Socket\Data\WriteEvents
+	 * ExpectedVersion:
+	 *  -2 -> just append
+	 *  -1 -> stream should not exist when processing
+	 *  >-1 -> expected version of stream
+	 *
+	 */
 	const WRITE_EVENTS =  0x82;
+	/**
+	 * Used with data:
+	 * EventStore\Client\Domain\Socket\Data\WriteEventsCompleted
+	 */
 	const WRITE_EVENTS_COMPLETED = 0x83;
 
 	//132
@@ -49,7 +62,7 @@ class MessageType
 	const READ_STREAM_EVENTS_FORWARD = 0xB2;
 	/**
 	 * Used with data:
-	 * EventStore\Client\Domain\Socket\Data\ResolvedIndexedEvent[]
+	 * EventStore\Client\Domain\Socket\Data\ReadAllEventsCompleted
 	 */
 	const READ_STREAM_EVENTS_FORWARD_COMPLETED = 0xB3;
 	/**
@@ -59,7 +72,7 @@ class MessageType
 	const READ_STREAM_EVENTS_BACKWARD = 0xB4;
 	/**
 	 * Used with data:
-	 * EventStore\Client\Domain\Socket\Data\ResolvedIndexedEvent[]
+	 * EventStore\Client\Domain\Socket\Data\ReadStreamEventsCompleted
 	 */
 	const READ_STREAM_EVENTS_BACKWARD_COMPLETED = 0xB5;
 	/**

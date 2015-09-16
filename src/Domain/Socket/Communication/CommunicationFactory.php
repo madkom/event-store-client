@@ -74,9 +74,17 @@ class CommunicationFactory
                 echo "Subscription confirmation";
                 $communicable = new Type\SubscriptionConfirmation();
                 break;
+            case MessageType::WRITE_EVENTS:
+                echo "Write Events\n";
+                $communicable = new Type\WriteEvents();
+                break;
             case MessageType::BAD_REQUEST:
                 echo "Bad Request\n";
                 $communicable = new Type\BadRequest();
+                break;
+            case MessageType::WRITE_EVENTS_COMPLETED:
+                echo "Write events\n";
+                $communicable = new Type\WriteEventsCompleted();
                 break;
             default:
                 throw new \RuntimeException('Unsupported message type ' . $messageType->getType());

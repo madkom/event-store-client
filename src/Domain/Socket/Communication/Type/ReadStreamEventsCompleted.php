@@ -25,7 +25,7 @@ class ReadStreamEventsCompleted implements Communicable
         $data->parseFromString($socketMessage->getData());
         $data->dump();
 
-        $socketMessage->changeData($data->getEvents());
+        $socketMessage->changeData($data);
 
         return $socketMessage;
     }
