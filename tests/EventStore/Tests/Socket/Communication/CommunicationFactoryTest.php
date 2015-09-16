@@ -23,7 +23,7 @@ class CommunicationFactoryTest extends PHPUnit_Framework_TestCase
         $messageType = $this->prophesize('EventStore\Client\Domain\Socket\Message\MessageType');
         $messageType->getType()->willReturn(\EventStore\Client\Domain\Socket\Message\MessageType::HEARTBEAT_RESPONSE);
 
-        PHPUnit_Framework_Assert::assertInstanceOf('EventStore\Client\Domain\Socket\Communication\Type\HeartBeatResponse', $this->communicationFactory->create($messageType->reveal()));
+        PHPUnit_Framework_Assert::assertInstanceOf('EventStore\Client\Domain\Socket\Communication\Type\HeartBeatResponseHandler', $this->communicationFactory->create($messageType->reveal()));
     }
 
 }

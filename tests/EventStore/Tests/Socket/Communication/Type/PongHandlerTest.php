@@ -4,15 +4,15 @@
  * Class HeartBeatResponseTest
  * @author Dariusz Gafka <dgafka.mail@gmail.com>
  */
-class PongTest extends PHPUnit_Framework_TestCase
+class PongHandlerTest extends PHPUnit_Framework_TestCase
 {
 
-    /** @var  \EventStore\Client\Domain\Socket\Communication\Type\HeartBeatResponse */
+    /** @var  \EventStore\Client\Domain\Socket\Communication\Type\PongHandlerHandler */
     private $ping;
 
     public function setUp()
     {
-        $this->ping = new \EventStore\Client\Domain\Socket\Communication\Type\Pong();
+        $this->ping = new \EventStore\Client\Domain\Socket\Communication\Type\PongHandler();
     }
 
     /**

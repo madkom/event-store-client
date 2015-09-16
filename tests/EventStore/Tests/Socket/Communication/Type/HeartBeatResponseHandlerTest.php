@@ -1,18 +1,18 @@
 <?php
 
 /**
- * Class HeartBeatResponseTest
+ * Class HeartBeatResponseHandlerTest
  * @author Dariusz Gafka <dgafka.mail@gmail.com>
  */
-class HeartBeatResponseTest extends PHPUnit_Framework_TestCase
+class HeartBeatResponseHandlerTest extends PHPUnit_Framework_TestCase
 {
 
-    /** @var  \EventStore\Client\Domain\Socket\Communication\Type\HeartBeatResponse */
+    /** @var  \EventStore\Client\Domain\Socket\Communication\Type\HeartBeatResponseHandler */
     private $heartBeatResponse;
 
     public function setUp()
     {
-        $this->heartBeatResponse = new \EventStore\Client\Domain\Socket\Communication\Type\HeartBeatResponse();
+        $this->heartBeatResponse = new \EventStore\Client\Domain\Socket\Communication\Type\HeartBeatResponseHandler();
     }
 
     /**
