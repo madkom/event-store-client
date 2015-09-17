@@ -5,10 +5,12 @@ namespace EventStore\Client\Domain\Socket;
 use EventStore\Client\Domain\DomainException;
 use EventStore\Client\Domain\Socket\Communication\CommunicationFactory;
 use EventStore\Client\Domain\Socket\Message\MessageComposer;
+use EventStore\Client\Domain\Socket\Message\MessageConfiguration;
 use EventStore\Client\Domain\Socket\Message\MessageDecomposer;
 use EventStore\Client\Domain\Socket\Message\MessageType;
 use EventStore\Client\Domain\Socket\Message\SocketMessage;
 use Psr\Log\LoggerInterface;
+use TrafficCophp\ByteBuffer\Buffer;
 
 /**
  * Class StreamHandler
@@ -32,8 +34,11 @@ class StreamHandler
      */
     private $logger;
 
-    //@TODO multi-part-message
-    private $currentMessage;
+    /** @var null|string current unfinish packaged recevied from ES */
+    private $currentMessage = null;
+
+    /** @var null Length of the package */
+    private $currentMessageLength = null;
 
     /**
      * @param Stream               $stream
@@ -54,24 +59,49 @@ class StreamHandler
      *
      * @param string $data
      *
-     * @return SocketMessage
+     * @return SocketMessage|null
      */
     public function handle($data)
     {
         try {
-            if(!$data) {
-                echo "\nEmpty Data\n";
+            if (!$data) {
                 return null;
             }
 
-            $socketMessage = $this->messageDecomposer->decomposeMessage($data);
+            if (is_null($this->currentMessage)) {
+                $buffer          = new Buffer($data);
+                $dataLength      = strlen($data);
+                $messageLength   = $buffer->readInt32LE(0) + MessageConfiguration::INT_32_LENGTH;
 
-            //If heartbeat then response
-            if($socketMessage->getMessageType()->getType() === MessageType::HEARTBEAT_REQUEST) {
-                $this->sendMessage(new SocketMessage(new MessageType(MessageType::HEARTBEAT_RESPONSE), $socketMessage->getCorrelationID()));
+                if($dataLength == $messageLength) {
+                    return $this->decomposeMessage($data);
+                }
+
+                if($dataLength > $messageLength) {
+                    $this->currentMessage = substr($data, $messageLength + 1, $dataLength);
+
+                    return $this->decomposeMessage(substr($data, 0, $messageLength));
+                }
+
+                $this->currentMessage = $this->currentMessage . $data;
+                return null;
             }
 
-            return $socketMessage;
+
+            $buffer          = new Buffer($this->currentMessage);
+            $messageLength   = $buffer->readInt32LE(0) + MessageConfiguration::INT_32_LENGTH;
+
+            $mergedMessages  = $this->currentMessage . $data;
+            $dataLength      = strlen($mergedMessages);
+
+            if($messageLength <= $dataLength) {
+                $this->currentMessage = null;
+                return $this->decomposeMessage($mergedMessages);
+            }
+
+            $this->currentMessage .= $data;
+            return null;
+
         }catch (\Exception $e) {
             $this->logger->critical('Error during handling incoming message.'.  ' Message Error: ' . $e->getMessage());
         }
@@ -94,6 +124,23 @@ class StreamHandler
         }catch (\Exception $e) {
             $this->logger->critical('Error during send a message with '. $socketMessage->getMessageType()->getType() . ' and id ' . $socketMessage->getCorrelationID() . '. Message Error: ' . $e->getMessage());
         }
+    }
+
+    /**
+     * @param $data
+     *
+     * @return SocketMessage
+     */
+    private function decomposeMessage($data)
+    {
+        $socketMessage = $this->messageDecomposer->decomposeMessage($data);
+
+        //If heartbeat then response
+        if ($socketMessage->getMessageType()->getType() === MessageType::HEARTBEAT_REQUEST) {
+            $this->sendMessage(new SocketMessage(new MessageType(MessageType::HEARTBEAT_RESPONSE), $socketMessage->getCorrelationID()));
+        }
+
+        return $socketMessage;
     }
 
 }

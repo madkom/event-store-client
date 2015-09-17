@@ -32,7 +32,7 @@ $resolvedConnection->then(function (React\Stream\Stream $stream) {
     $readStreamEvent->setEventStreamId('TestStream2');
     $readStreamEvent->setResolveLinkTos(false);
     $readStreamEvent->setRequireMaster(false);
-    $readStreamEvent->setMaxCount(1000);
+    $readStreamEvent->setMaxCount(100);
     $readStreamEvent->setFromEventNumber(0);
 
     $streamHandler->sendMessage(
@@ -104,25 +104,35 @@ $resolvedConnection->then(function (React\Stream\Stream $stream) {
 //
 //
 //
-//    $event = new \EventStore\Client\Domain\Socket\Data\NewEvent();
-//    $event->setData(json_encode(['test' => 'bla']));
-//    $event->setEventType('testType');
-//    $event->setEventId(hex2bin(md5('12323')));
-//    $event->setDataContentType(1);
-//    $event->setMetadataContentType(2);
+//    $counter = 0;
+//    $events = [];
+//    while($counter < 1000) {
+//        $event = new \EventStore\Client\Domain\Socket\Data\NewEvent();
+//        $event->setData(json_encode(['test' => 'bla']));
+//        $event->setEventType('testType');
+//        $event->setEventId(hex2bin(md5($counter)));
+//        $event->setDataContentType(1);
+//        $event->setMetadataContentType(2);
 //
-//    $writeEvents = new \EventStore\Client\Domain\Socket\Data\WriteEvents();
-//    $writeEvents->appendEvents($event);
-//    $writeEvents->setEventStreamId('TestStream2');
-//    $writeEvents->setExpectedVersion(1);
-//    $writeEvents->setRequireMaster(false);
+//        $events[] = $event;
+//        $counter++;
+//    }
 //
-//    $streamHandler->sendMessage(
-//        new \EventStore\Client\Domain\Socket\Message\SocketMessage(
-//            new \EventStore\Client\Domain\Socket\Message\MessageType(\EventStore\Client\Domain\Socket\Message\MessageType::WRITE_EVENTS),
-//            null,
-//            $writeEvents)
-//    );
+//        $writeEvents = new \EventStore\Client\Domain\Socket\Data\WriteEvents();
+//        $writeEvents->setEventStreamId('TestStream2');
+//        $writeEvents->setExpectedVersion(11);
+//        $writeEvents->setRequireMaster(false);
+//
+//    foreach($events as $event) {
+//        $writeEvents->appendEvents($event);
+//    }
+//
+//        $streamHandler->sendMessage(
+//            new \EventStore\Client\Domain\Socket\Message\SocketMessage(
+//                new \EventStore\Client\Domain\Socket\Message\MessageType(\EventStore\Client\Domain\Socket\Message\MessageType::WRITE_EVENTS),
+//                null,
+//                $writeEvents)
+//        );
 
 //    $stream->close();
 });

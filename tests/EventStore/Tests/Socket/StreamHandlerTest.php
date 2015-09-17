@@ -64,14 +64,23 @@ class StreamHandlerTest extends PHPUnit_Framework_TestCase
      */
     public function it_should_handle_without_response()
     {
+        $wholeMessageLength = 0 + \EventStore\Client\Domain\Socket\Message\MessageConfiguration::INT_32_LENGTH + \EventStore\Client\Domain\Socket\Message\MessageConfiguration::HEADER_LENGTH;
+        $buffer = new \TrafficCophp\ByteBuffer\Buffer($wholeMessageLength);
+
+        $buffer->writeInt32LE(18, 0);
+        $buffer->writeInt8(\EventStore\Client\Domain\Socket\Message\MessageType::PING, \EventStore\Client\Domain\Socket\Message\MessageConfiguration::MESSAGE_TYPE_OFFSET);
+        $buffer->writeInt8(\EventStore\Client\Domain\Socket\Message\MessageConfiguration::FLAGS_NONE, \EventStore\Client\Domain\Socket\Message\MessageConfiguration::FLAG_OFFSET);
+        $buffer->write(hex2bin('12350000000000000000000000000000'), \EventStore\Client\Domain\Socket\Message\MessageConfiguration::CORRELATION_ID_OFFSET);
+
+
         $messageType = $this->internalProphet->prophesize('EventStore\Client\Domain\Socket\Message\MessageType');
         $messageType->getType()->willReturn(\EventStore\Client\Domain\Socket\Message\MessageType::HEARTBEAT_RESPONSE);
         $this->socketMessage->getMessageType()->willReturn($messageType->reveal());
         $this->socketMessage->reveal();
 
-        $this->messageDecomposer->decomposeMessage('test')->willReturn($this->socketMessage);
+        $this->messageDecomposer->decomposeMessage((string)$buffer)->willReturn($this->socketMessage);
 
-        PHPUnit_Framework_Assert::assertInstanceOf('EventStore\Client\Domain\Socket\Message\SocketMessage', $this->streamHandler->handle('test'));
+        PHPUnit_Framework_Assert::assertInstanceOf('EventStore\Client\Domain\Socket\Message\SocketMessage', $this->streamHandler->handle((string)$buffer));
     }
 
     /**
@@ -79,20 +88,29 @@ class StreamHandlerTest extends PHPUnit_Framework_TestCase
      */
     public function it_should_handle_with_response()
     {
+        $wholeMessageLength = 0 + \EventStore\Client\Domain\Socket\Message\MessageConfiguration::INT_32_LENGTH + \EventStore\Client\Domain\Socket\Message\MessageConfiguration::HEADER_LENGTH;
+        $buffer = new \TrafficCophp\ByteBuffer\Buffer($wholeMessageLength);
+
+        $buffer->writeInt32LE(18, 0);
+        $buffer->writeInt8(\EventStore\Client\Domain\Socket\Message\MessageType::PING, \EventStore\Client\Domain\Socket\Message\MessageConfiguration::MESSAGE_TYPE_OFFSET);
+        $buffer->writeInt8(\EventStore\Client\Domain\Socket\Message\MessageConfiguration::FLAGS_NONE, \EventStore\Client\Domain\Socket\Message\MessageConfiguration::FLAG_OFFSET);
+        $buffer->write(hex2bin('12350000000000000000000000000000'), \EventStore\Client\Domain\Socket\Message\MessageConfiguration::CORRELATION_ID_OFFSET);
+
+
         $messageTypeChanged = $this->internalProphet->prophesize('EventStore\Client\Domain\Socket\Message\MessageType');
         $messageTypeChanged->getType()->willReturn(\EventStore\Client\Domain\Socket\Message\MessageType::HEARTBEAT_REQUEST);
         $messageTypeChanged = $messageTypeChanged->reveal();
         $this->socketMessage->getMessageType()->willReturn($messageTypeChanged);
         $this->socketMessage->getCorrelationID()->willReturn('some');
 
-        $this->messageDecomposer->decomposeMessage('test')->willReturn($this->socketMessage->reveal());
+        $this->messageDecomposer->decomposeMessage((string)$buffer)->willReturn($this->socketMessage->reveal());
 
 
         $this->messageComposer->compose(\Prophecy\Argument::type('EventStore\Client\Domain\Socket\Message\SocketMessage'))->willReturn('someBinary');
         $this->stream->write('someBinary')->shouldBeCalledTimes(1);
         $this->stream->reveal();
 
-        PHPUnit_Framework_Assert::assertInstanceOf('EventStore\Client\Domain\Socket\Message\SocketMessage', $this->streamHandler->handle('test'));
+        PHPUnit_Framework_Assert::assertInstanceOf('EventStore\Client\Domain\Socket\Message\SocketMessage', $this->streamHandler->handle((string)$buffer));
     }
 
     /**
