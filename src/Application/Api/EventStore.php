@@ -2,12 +2,15 @@
 
 namespace EventStore\Client\Application\Api;
 
+use Doctrine\Instantiator\Exception\InvalidArgumentException;
 use EventStore\Client\Domain\Socket\Communication\CommunicationFactory;
 use EventStore\Client\Domain\Socket\Message\MessageComposer;
 use EventStore\Client\Domain\Socket\Message\MessageDecomposer;
+use EventStore\Client\Domain\Socket\Message\MessageType;
 use EventStore\Client\Domain\Socket\Message\SocketMessage;
 use EventStore\Client\Domain\Socket\Stream;
 use EventStore\Client\Domain\Socket\StreamHandler;
+use Psr\Log\LoggerInterface;
 
 /**
  * Class EventStore
@@ -17,30 +20,76 @@ use EventStore\Client\Domain\Socket\StreamHandler;
 class EventStore
 {
 
-    /** @var Stream  */
+    /** @var StreamHandler  */
     private $streamHandler;
 
+    /** @var Stream  */
+    private $stream;
+
+    /** @var array  */
+    private $actionsToRun = [];
+
     /**
-     * @param Stream $stream
+     * @param Stream          $stream
+     * @param LoggerInterface $loggerInterface
      */
-    public function __construct(Stream $stream)
+    public function __construct(Stream $stream, LoggerInterface $loggerInterface)
     {
-        $this->streamHandler = new StreamHandler($stream, new MessageDecomposer(), new MessageComposer(), new CommunicationFactory());
+        $this->streamHandler = new StreamHandler($stream, $loggerInterface, new MessageDecomposer(new CommunicationFactory()), new MessageComposer());
+        $this->stream = $stream;
     }
 
     /**
-     * Runs action
+     * Send message via socket
      *
      * @param SocketMessage $socketMessage
      */
-    public function runActionAsync(SocketMessage $socketMessage)
+    public function sendMessage(SocketMessage $socketMessage)
     {
-//        $this->streamHandler->
+        $this->streamHandler->sendMessage($socketMessage);
     }
 
-    public function runActionSync(SocketMessage $socketMessage)
+    /**
+     * Adds listeners for specific message
+     *
+     * @param int         $messageType taken from MessageType cons
+     * @param \Closure    $callback
+     *
+     */
+    public function addAction($messageType, \Closure $callback)
     {
-//        $this->streamHandler->
+        $messageType = new MessageType($messageType);
+
+        if(array_key_exists($messageType->getType(), $this->actionsToRun)) {
+           throw new InvalidArgumentException($messageType->getType() . ' is already registered');
+        }
+
+        $this->actionsToRun[$messageType->getType()] = $callback;
     }
+
+    /**
+     * Enables listeners
+     */
+    public function run()
+    {
+        $actionsToRun = $this->actionsToRun;
+        $streamHandler = $this->streamHandler;
+
+        $this->stream->onData(function($data) use($streamHandler, $actionsToRun) {
+
+            $socketMessage = $streamHandler->handle($data);
+            if(is_null($socketMessage)) {
+                return;
+            }
+            foreach ($actionsToRun as $key => $callback) {
+               if ($key === $socketMessage->getMessageType()->getType()) {
+                    $callback($socketMessage);
+                    return;
+               }
+            }
+        });
+    }
+
+
 
 }

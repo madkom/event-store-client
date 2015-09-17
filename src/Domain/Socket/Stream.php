@@ -2,6 +2,8 @@
 
 namespace EventStore\Client\Domain\Socket;
 
+use EventStore\Client\Domain\Socket\Message\SocketMessage;
+
 /**
  * Interface Stream
  * @package EventStore\Client\Domain\Socket
@@ -23,5 +25,14 @@ interface Stream
      * @return void
      */
     public function closeConnection();
+
+    /**
+     * Method run when new data arrives to stream
+     *
+     * @param \Closure $closure
+     *
+     * @return SocketMessage
+     */
+    public function onData(\Closure $closure);
 
 }

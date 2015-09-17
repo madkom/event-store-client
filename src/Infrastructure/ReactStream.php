@@ -2,6 +2,7 @@
 
 namespace EventStore\Client\Infrastructure;
 
+use EventStore\Client\Domain\Socket\Message\SocketMessage;
 use EventStore\Client\Domain\Socket\Stream;
 use React\Stream\Stream as ReactStreamApi;
 
@@ -41,6 +42,14 @@ class ReactStream implements Stream
     public function closeConnection()
     {
         $this->reactStream->close();
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function onData(\Closure $closure)
+    {
+        $this->reactStream->on('data', $closure);
     }
 
 }
