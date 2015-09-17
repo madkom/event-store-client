@@ -58,20 +58,23 @@ class StreamHandler
      */
     public function handle($data)
     {
+        try {
+            if(!$data) {
+                echo "\nEmpty Data\n";
+                return null;
+            }
 
-        if(!$data) {
-            echo "\nEmpty Data\n";
-            return null;
+            $socketMessage = $this->messageDecomposer->decomposeMessage($data);
+
+            //If heartbeat then response
+            if($socketMessage->getMessageType()->getType() === MessageType::HEARTBEAT_REQUEST) {
+                $this->sendMessage(new SocketMessage(new MessageType(MessageType::HEARTBEAT_RESPONSE), $socketMessage->getCorrelationID()));
+            }
+
+            return $socketMessage;
+        }catch (\Exception $e) {
+            $this->logger->critical('Error during handling incoming message.'.  ' Message Error: ' . $e->getMessage());
         }
-
-        $socketMessage = $this->messageDecomposer->decomposeMessage($data);
-
-        //If heartbeat then response
-        if($socketMessage->getMessageType()->getType() === MessageType::HEARTBEAT_REQUEST) {
-            $this->sendMessage(new SocketMessage(new MessageType(MessageType::HEARTBEAT_RESPONSE), $socketMessage->getCorrelationID()));
-        }
-
-        return $socketMessage;
     }
 
     /**
@@ -89,7 +92,7 @@ class StreamHandler
 
             $this->stream->write($binaryMessage);
         }catch (\Exception $e) {
-            $this->logger->critical('Error during '. $socketMessage->getMessageType()->getType() . ' with id ' . $socketMessage->getCorrelationID() . '. Message Error: ' . $e->getMessage());
+            $this->logger->critical('Error during send a message with '. $socketMessage->getMessageType()->getType() . ' and id ' . $socketMessage->getCorrelationID() . '. Message Error: ' . $e->getMessage());
         }
     }
 

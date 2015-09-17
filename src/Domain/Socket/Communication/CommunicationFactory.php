@@ -63,6 +63,10 @@ class CommunicationFactory
                 echo "Stream event appeared\n";
                 $communicable = new Type\StreamEventAppearedHandler();
                 break;
+            case MessageType::NOT_AUTHENTICATED:
+                echo "Not authenticated\n";
+                $communicable = new Type\NotAuthenticatedHandler();
+                break;
             default:
                 throw new \RuntimeException('Unsupported message type ' . $messageType->getType());
         }

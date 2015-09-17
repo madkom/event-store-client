@@ -23,11 +23,11 @@ $resolvedConnection->then(function (React\Stream\Stream $stream) {
         $streamHandler->handle($data);
     });
 
-    $streamHandler->sendMessage(new \EventStore\Client\Domain\Socket\Message\SocketMessage(
-        new \EventStore\Client\Domain\Socket\Message\MessageType(\EventStore\Client\Domain\Socket\Message\MessageType::PING),
-        null,
-        null));
-
+//    $streamHandler->sendMessage(new \EventStore\Client\Domain\Socket\Message\SocketMessage(
+//        new \EventStore\Client\Domain\Socket\Message\MessageType(\EventStore\Client\Domain\Socket\Message\MessageType::PING),
+//        null,
+//        null));
+//
     $readStreamEvent = new \EventStore\Client\Domain\Socket\Data\ReadStreamEvents();
     $readStreamEvent->setEventStreamId('TestStream2');
     $readStreamEvent->setResolveLinkTos(false);
@@ -39,68 +39,90 @@ $resolvedConnection->then(function (React\Stream\Stream $stream) {
         new \EventStore\Client\Domain\Socket\Message\SocketMessage(
             new \EventStore\Client\Domain\Socket\Message\MessageType(\EventStore\Client\Domain\Socket\Message\MessageType::READ_STREAM_EVENTS_FORWARD),
             null,
-            $readStreamEvent)
+            $readStreamEvent,
+            new \EventStore\Client\Domain\Socket\Message\Credentials('admin', 'changeit')
+        )
         );
 
-    $readAllEvent = new EventStore\Client\Domain\Socket\Data\ReadAllEvents();
-    $readAllEvent->setMaxCount(1000);
-    $readAllEvent->setRequireMaster(false);
-    $readAllEvent->setResolveLinkTos(true);
-    $readAllEvent->setCommitPosition(1000);
-    $readAllEvent->setPreparePosition(1000);
-
-    $streamHandler->sendMessage(
-        new \EventStore\Client\Domain\Socket\Message\SocketMessage(
-            new \EventStore\Client\Domain\Socket\Message\MessageType(\EventStore\Client\Domain\Socket\Message\MessageType::READ_ALL_EVENTS_FORWARD),
-            null,
-            $readAllEvent)
-    );
-
-    $subscribeToStream = new \EventStore\Client\Domain\Socket\Data\SubscribeToStream();
-    $subscribeToStream->setEventStreamId('TestStream');
-    $subscribeToStream->setResolveLinkTos(true);
-
-    $streamHandler->sendMessage(
-        new \EventStore\Client\Domain\Socket\Message\SocketMessage(
-            new \EventStore\Client\Domain\Socket\Message\MessageType(\EventStore\Client\Domain\Socket\Message\MessageType::SUBSCRIBE_TO_STREAM),
-            null,
-            $subscribeToStream,
-            null
-            )
-    );
-
-
-    $unsubscribeToStream = new \EventStore\Client\Domain\Socket\Data\UnsubscribeFromStream();
-    $streamHandler->sendMessage(
-        new \EventStore\Client\Domain\Socket\Message\SocketMessage(
-            new \EventStore\Client\Domain\Socket\Message\MessageType(\EventStore\Client\Domain\Socket\Message\MessageType::UNSUBSCRIBE_FROM_STREAM),
-            null,
-            $unsubscribeToStream,
-            null
-            )
-    );
+//    $readAllEvent = new EventStore\Client\Domain\Socket\Data\ReadAllEvents();
+//    $readAllEvent->setMaxCount(1000);
+//    $readAllEvent->setRequireMaster(false);
+//    $readAllEvent->setResolveLinkTos(true);
+//    $readAllEvent->setCommitPosition(1000);
+//    $readAllEvent->setPreparePosition(1000);
+//
+//    $streamHandler->sendMessage(
+//        new \EventStore\Client\Domain\Socket\Message\SocketMessage(
+//            new \EventStore\Client\Domain\Socket\Message\MessageType(\EventStore\Client\Domain\Socket\Message\MessageType::READ_ALL_EVENTS_FORWARD),
+//            null,
+//            $readAllEvent
+//        )
+//    );
 
 
 
-    $event = new \EventStore\Client\Domain\Socket\Data\NewEvent();
-    $event->setData(json_encode(['test' => 'bla']));
-    $event->setEventType('testType');
-    $event->setEventId(hex2bin(md5('12323')));
-    $event->setDataContentType(1);
-    $event->setMetadataContentType(2);
-
-    $writeEvents = new \EventStore\Client\Domain\Socket\Data\WriteEvents();
-    $writeEvents->appendEvents($event);
-    $writeEvents->setEventStreamId('TestStream2');
-    $writeEvents->setExpectedVersion(1);
-    $writeEvents->setRequireMaster(false);
-
-    $streamHandler->sendMessage(
-        new \EventStore\Client\Domain\Socket\Message\SocketMessage(
-            new \EventStore\Client\Domain\Socket\Message\MessageType(\EventStore\Client\Domain\Socket\Message\MessageType::WRITE_EVENTS),
-            null,
-            $writeEvents)
-    );
+//    $readAllEvent = new EventStore\Client\Domain\Socket\Data\ReadAllEvents();
+//    $readAllEvent->setMaxCount(1000);
+//    $readAllEvent->setRequireMaster(false);
+//    $readAllEvent->setResolveLinkTos(true);
+//    $readAllEvent->setCommitPosition(1);
+//    $readAllEvent->setPreparePosition(1);
+//
+//    $streamHandler->sendMessage(
+//        new \EventStore\Client\Domain\Socket\Message\SocketMessage(
+//            new \EventStore\Client\Domain\Socket\Message\MessageType(\EventStore\Client\Domain\Socket\Message\MessageType::READ_ALL_EVENTS_FORWARD),
+//            null,
+//            $readAllEvent,
+//            new \EventStore\Client\Domain\Socket\Message\Credentials('admin', 'changeit')
+//        )
+//    );
+//
+//
+//    $subscribeToStream = new \EventStore\Client\Domain\Socket\Data\SubscribeToStream();
+//    $subscribeToStream->setEventStreamId('TestStream');
+//    $subscribeToStream->setResolveLinkTos(true);
+//
+//    $streamHandler->sendMessage(
+//        new \EventStore\Client\Domain\Socket\Message\SocketMessage(
+//            new \EventStore\Client\Domain\Socket\Message\MessageType(\EventStore\Client\Domain\Socket\Message\MessageType::SUBSCRIBE_TO_STREAM),
+//            null,
+//            $subscribeToStream,
+//            null
+//            )
+//    );
+//
+//
+//    $unsubscribeToStream = new \EventStore\Client\Domain\Socket\Data\UnsubscribeFromStream();
+//    $streamHandler->sendMessage(
+//        new \EventStore\Client\Domain\Socket\Message\SocketMessage(
+//            new \EventStore\Client\Domain\Socket\Message\MessageType(\EventStore\Client\Domain\Socket\Message\MessageType::UNSUBSCRIBE_FROM_STREAM),
+//            null,
+//            $unsubscribeToStream,
+//            null
+//            )
+//    );
+//
+//
+//
+//    $event = new \EventStore\Client\Domain\Socket\Data\NewEvent();
+//    $event->setData(json_encode(['test' => 'bla']));
+//    $event->setEventType('testType');
+//    $event->setEventId(hex2bin(md5('12323')));
+//    $event->setDataContentType(1);
+//    $event->setMetadataContentType(2);
+//
+//    $writeEvents = new \EventStore\Client\Domain\Socket\Data\WriteEvents();
+//    $writeEvents->appendEvents($event);
+//    $writeEvents->setEventStreamId('TestStream2');
+//    $writeEvents->setExpectedVersion(1);
+//    $writeEvents->setRequireMaster(false);
+//
+//    $streamHandler->sendMessage(
+//        new \EventStore\Client\Domain\Socket\Message\SocketMessage(
+//            new \EventStore\Client\Domain\Socket\Message\MessageType(\EventStore\Client\Domain\Socket\Message\MessageType::WRITE_EVENTS),
+//            null,
+//            $writeEvents)
+//    );
 
 //    $stream->close();
 });
