@@ -5,7 +5,7 @@
  * EventStore.Socket.Proxy package
  */
 
-namespace EventStore\Client\Domain\Socket\Data {
+namespace Madkom\EventStore\Client\Domain\Socket\Data {
 /**
  * SubscriptionDropped message
  */
@@ -17,7 +17,7 @@ class SubscriptionDropped extends \ProtobufMessage
     /* @var array Field descriptors */
     protected static $fields = array(
         self::REASON => array(
-            'default' => \EventStore\Client\Domain\Socket\Data\SubscriptionDropped\SubscriptionDropReason::Unsubscribed,
+            'default' => \Madkom\EventStore\Client\Domain\Socket\Data\SubscriptionDropped\SubscriptionDropReason::Unsubscribed,
             'name' => 'reason',
             'required' => false,
             'type' => 5,
@@ -41,7 +41,7 @@ class SubscriptionDropped extends \ProtobufMessage
      */
     public function reset()
     {
-        $this->values[self::REASON] = \EventStore\Client\Domain\Socket\Data\SubscriptionDropped\SubscriptionDropReason::Unsubscribed;
+        $this->values[self::REASON] = \Madkom\EventStore\Client\Domain\Socket\Data\SubscriptionDropped\SubscriptionDropReason::Unsubscribed;
     }
 
     /**

@@ -1,20 +1,20 @@
 <?php
 
-namespace EventStore\Client\Application\Api;
+namespace Madkom\EventStore\Client\Application\Api;
 
 use Doctrine\Instantiator\Exception\InvalidArgumentException;
-use EventStore\Client\Domain\Socket\Communication\CommunicationFactory;
-use EventStore\Client\Domain\Socket\Message\MessageComposer;
-use EventStore\Client\Domain\Socket\Message\MessageDecomposer;
-use EventStore\Client\Domain\Socket\Message\MessageType;
-use EventStore\Client\Domain\Socket\Message\SocketMessage;
-use EventStore\Client\Domain\Socket\Stream;
-use EventStore\Client\Domain\Socket\StreamHandler;
+use Madkom\EventStore\Client\Domain\Socket\Communication\CommunicationFactory;
+use Madkom\EventStore\Client\Domain\Socket\Message\MessageComposer;
+use Madkom\EventStore\Client\Domain\Socket\Message\MessageDecomposer;
+use Madkom\EventStore\Client\Domain\Socket\Message\MessageType;
+use Madkom\EventStore\Client\Domain\Socket\Message\SocketMessage;
+use Madkom\EventStore\Client\Domain\Socket\Stream;
+use Madkom\EventStore\Client\Domain\Socket\StreamHandler;
 use Psr\Log\LoggerInterface;
 
 /**
  * Class EventStore
- * @package EventStore\Client\Application\Api
+ * @package Madkom\EventStore\Client\Application\Api
  * @author  Dariusz Gafka <d.gafka@madkom.pl>
  */
 class EventStore

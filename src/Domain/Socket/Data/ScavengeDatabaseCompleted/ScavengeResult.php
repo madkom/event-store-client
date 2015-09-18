@@ -4,7 +4,7 @@
  *
  * EventStore.Socket.Proxy package
  */
-namespace EventStore\Client\Domain\Socket\Data\ScavengeDatabaseCompleted {
+namespace Madkom\EventStore\Client\Domain\Socket\Data\ScavengeDatabaseCompleted {
 /**
  * ScavengeResult enum embedded in ScavengeDatabaseCompleted message
  */

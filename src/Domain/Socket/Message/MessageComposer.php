@@ -1,13 +1,13 @@
 <?php
 
-namespace EventStore\Client\Domain\Socket\Message;
+namespace Madkom\EventStore\Client\Domain\Socket\Message;
 
 use Rhumsaa\Uuid\Uuid;
 use TrafficCophp\ByteBuffer\Buffer;
 
 /**
  * Class MessageComposer - Composes binary message
- * @package EventStore\Client\Domain\Socket\Message
+ * @package Madkom\EventStore\Client\Domain\Socket\Message
  * @author  Dariusz Gafka <dgafka.mail@gmail.com>
  */
 class MessageComposer

@@ -1,10 +1,10 @@
 <?php
 
-namespace EventStore\Client\Domain;
+namespace Madkom\EventStore\Client\Domain;
 
 /**
  * Class DomainException
- * @package EventStore\Client\Domain
+ * @package Madkom\EventStore\Client\Domain
  * @author  Dariusz Gafka <d.gafka@madkom.pl>
  */
 class DomainException extends \Exception

@@ -1,20 +1,20 @@
 <?php
 
-namespace EventStore\Client\Domain\Socket;
+namespace Madkom\EventStore\Client\Domain\Socket;
 
-use EventStore\Client\Domain\DomainException;
-use EventStore\Client\Domain\Socket\Communication\CommunicationFactory;
-use EventStore\Client\Domain\Socket\Message\MessageComposer;
-use EventStore\Client\Domain\Socket\Message\MessageConfiguration;
-use EventStore\Client\Domain\Socket\Message\MessageDecomposer;
-use EventStore\Client\Domain\Socket\Message\MessageType;
-use EventStore\Client\Domain\Socket\Message\SocketMessage;
+use Madkom\EventStore\Client\Domain\DomainException;
+use Madkom\EventStore\Client\Domain\Socket\Communication\CommunicationFactory;
+use Madkom\EventStore\Client\Domain\Socket\Message\MessageComposer;
+use Madkom\EventStore\Client\Domain\Socket\Message\MessageConfiguration;
+use Madkom\EventStore\Client\Domain\Socket\Message\MessageDecomposer;
+use Madkom\EventStore\Client\Domain\Socket\Message\MessageType;
+use Madkom\EventStore\Client\Domain\Socket\Message\SocketMessage;
 use Psr\Log\LoggerInterface;
 use TrafficCophp\ByteBuffer\Buffer;
 
 /**
  * Class StreamHandler
- * @package EventStore\Client\Domain\Socket
+ * @package Madkom\EventStore\Client\Domain\Socket
  * @author  Dariusz Gafka <dgafka.mail@gmail.com>
  */
 class StreamHandler

@@ -1,12 +1,12 @@
 <?php
 
-namespace EventStore\Client\Domain\Socket;
+namespace Madkom\EventStore\Client\Domain\Socket;
 
-use EventStore\Client\Domain\Socket\Message\SocketMessage;
+use Madkom\EventStore\Client\Domain\Socket\Message\SocketMessage;
 
 /**
  * Interface Stream
- * @package EventStore\Client\Domain\Socket
+ * @package Madkom\EventStore\Client\Domain\Socket
  * @author  Dariusz Gafka <d.gafka@madkom.pl>
  */
 interface Stream

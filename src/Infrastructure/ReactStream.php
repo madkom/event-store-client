@@ -1,15 +1,15 @@
 <?php
 
-namespace EventStore\Client\Infrastructure;
+namespace Madkom\EventStore\Client\Infrastructure;
 
-use EventStore\Client\Domain\Socket\Message\SocketMessage;
-use EventStore\Client\Domain\Socket\Stream;
+use Madkom\EventStore\Client\Domain\Socket\Message\SocketMessage;
+use Madkom\EventStore\Client\Domain\Socket\Stream;
 use React\Stream\Stream as ReactStreamApi;
 
 /**
  * Class ReactStream
  *
- * @package EventStore\Client\Infrastructure
+ * @package Madkom\EventStore\Client\Infrastructure
  * @author Dariusz Gafka <dgafka.mail@gmail.com>
  */
 class ReactStream implements Stream

@@ -5,7 +5,7 @@
  * EventStore.Socket.Proxy package
  */
 
-namespace EventStore\Client\Domain\Socket\Data {
+namespace Madkom\EventStore\Client\Domain\Socket\Data {
 /**
  * ResolvedIndexedEvent message
  */
@@ -20,12 +20,12 @@ class ResolvedIndexedEvent extends \ProtobufMessage
         self::EVENT => array(
             'name' => 'event',
             'required' => true,
-            'type' => '\EventStore\Client\Domain\Socket\Data\EventRecord'
+            'type' => '\Madkom\EventStore\Client\Domain\Socket\Data\EventRecord'
         ),
         self::LINK => array(
             'name' => 'link',
             'required' => false,
-            'type' => '\EventStore\Client\Domain\Socket\Data\EventRecord'
+            'type' => '\Madkom\EventStore\Client\Domain\Socket\Data\EventRecord'
         ),
     );
 
@@ -63,11 +63,11 @@ class ResolvedIndexedEvent extends \ProtobufMessage
     /**
      * Sets value of 'event' property
      *
-     * @param \EventStore\Client\Domain\Socket\Data\EventRecord $value Property value
+     * @param \Madkom\EventStore\Client\Domain\Socket\Data\EventRecord $value Property value
      *
      * @return null
      */
-    public function setEvent(\EventStore\Client\Domain\Socket\Data\EventRecord $value)
+    public function setEvent(\Madkom\EventStore\Client\Domain\Socket\Data\EventRecord $value)
     {
         return $this->set(self::EVENT, $value);
     }
@@ -75,7 +75,7 @@ class ResolvedIndexedEvent extends \ProtobufMessage
     /**
      * Returns value of 'event' property
      *
-     * @return \EventStore\Client\Domain\Socket\Data\EventRecord
+     * @return \Madkom\EventStore\Client\Domain\Socket\Data\EventRecord
      */
     public function getEvent()
     {
@@ -85,11 +85,11 @@ class ResolvedIndexedEvent extends \ProtobufMessage
     /**
      * Sets value of 'link' property
      *
-     * @param \EventStore\Client\Domain\Socket\Data\EventRecord $value Property value
+     * @param \Madkom\EventStore\Client\Domain\Socket\Data\EventRecord $value Property value
      *
      * @return null
      */
-    public function setLink(\EventStore\Client\Domain\Socket\Data\EventRecord $value)
+    public function setLink(\Madkom\EventStore\Client\Domain\Socket\Data\EventRecord $value)
     {
         return $this->set(self::LINK, $value);
     }
@@ -97,7 +97,7 @@ class ResolvedIndexedEvent extends \ProtobufMessage
     /**
      * Returns value of 'link' property
      *
-     * @return \EventStore\Client\Domain\Socket\Data\EventRecord
+     * @return \Madkom\EventStore\Client\Domain\Socket\Data\EventRecord
      */
     public function getLink()
     {

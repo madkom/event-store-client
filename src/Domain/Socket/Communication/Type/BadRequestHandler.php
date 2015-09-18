@@ -1,14 +1,14 @@
 <?php
 
-namespace EventStore\Client\Domain\Socket\Communication\Type;
+namespace Madkom\EventStore\Client\Domain\Socket\Communication\Type;
 
-use EventStore\Client\Domain\DomainException;
-use EventStore\Client\Domain\Socket\Communication\Communicable;
-use EventStore\Client\Domain\Socket\Message\MessageType;
+use Madkom\EventStore\Client\Domain\DomainException;
+use Madkom\EventStore\Client\Domain\Socket\Communication\Communicable;
+use Madkom\EventStore\Client\Domain\Socket\Message\MessageType;
 
 /**
  * Class BadRequest
- * @package EventStore\Client\Domain\Socket\Communication\Type
+ * @package Madkom\EventStore\Client\Domain\Socket\Communication\Type
  * @author  Dariusz Gafka <d.gafka@madkom.pl>
  */
 class BadRequestHandler implements Communicable

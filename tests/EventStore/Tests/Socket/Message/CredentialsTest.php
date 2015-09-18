@@ -7,12 +7,12 @@
 class CredentialsTest extends PHPUnit_Framework_TestCase
 {
 
-    /** @var  \EventStore\Client\Domain\Socket\Message\Credentials */
+    /** @var  \Madkom\EventStore\Client\Domain\Socket\Message\Credentials */
     private $credentials;
 
     public function setUp()
     {
-        $this->credentials = new \EventStore\Client\Domain\Socket\Message\Credentials('test', 'tester');
+        $this->credentials = new \Madkom\EventStore\Client\Domain\Socket\Message\Credentials('test', 'tester');
     }
 
     /**

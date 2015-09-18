@@ -4,7 +4,7 @@
  *
  * EventStore.Socket.Proxy package
  */
-namespace EventStore\Client\Domain\Socket\Data\SubscriptionDropped {
+namespace Madkom\EventStore\Client\Domain\Socket\Data\SubscriptionDropped {
 /**
  * SubscriptionDropReason enum embedded in SubscriptionDropped message
  */

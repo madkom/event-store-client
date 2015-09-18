@@ -1,13 +1,13 @@
 <?php
 
-namespace EventStore\Client\Domain\Socket\Message;
+namespace Madkom\EventStore\Client\Domain\Socket\Message;
 
 /**
  * Class Command
  * Result, which arrives in completed actions:
  *
  *
- * @package EventStore\Client\Domain\Socket
+ * @package Madkom\EventStore\Client\Domain\Socket
  * @author Dariusz Gafka <dgafka.mail@gmail.com>
  */
 class MessageType
@@ -28,7 +28,7 @@ class MessageType
 	//130
 	/**
 	 * Used with data:
-	 * EventStore\Client\Domain\Socket\Data\WriteEvents
+	 * Madkom\EventStore\Client\Domain\Socket\Data\WriteEvents
 	 * ExpectedVersion:
 	 *  -2 -> just append
 	 *  -1 -> stream should not exist when processing
@@ -38,7 +38,7 @@ class MessageType
 	const WRITE_EVENTS =  0x82;
 	/**
 	 * Used with data:
-	 * EventStore\Client\Domain\Socket\Data\WriteEventsCompleted
+	 * Madkom\EventStore\Client\Domain\Socket\Data\WriteEventsCompleted
 	 */
 	const WRITE_EVENTS_COMPLETED = 0x83;
 
@@ -59,12 +59,12 @@ class MessageType
 	const READ_EVENT_COMPLETED =  0xB1;
 	/**
 	 * Used with data:
-	 * EventStore\Client\Domain\Socket\Data\ReadStreamEvents
+	 * Madkom\EventStore\Client\Domain\Socket\Data\ReadStreamEvents
 	 */
 	const READ_STREAM_EVENTS_FORWARD = 0xB2;
 	/**
 	 * Used with data:
-	 * EventStore\Client\Domain\Socket\Data\ReadAllEventsCompleted
+	 * Madkom\EventStore\Client\Domain\Socket\Data\ReadAllEventsCompleted
 	 *      ReadStreamResult:
 	 * 		Success = 0;
 	 *		NoStream = 1;
@@ -76,12 +76,12 @@ class MessageType
 	const READ_STREAM_EVENTS_FORWARD_COMPLETED = 0xB3;
 	/**
 	 * Used with data:
-	 * EventStore\Client\Domain\Socket\Data\ReadStreamEvents
+	 * Madkom\EventStore\Client\Domain\Socket\Data\ReadStreamEvents
 	 */
 	const READ_STREAM_EVENTS_BACKWARD = 0xB4;
 	/**
 	 * Used with data:
-	 * EventStore\Client\Domain\Socket\Data\ReadStreamEventsCompleted
+	 * Madkom\EventStore\Client\Domain\Socket\Data\ReadStreamEventsCompleted
 	 *      ReadStreamResult:
 	 * 		Success = 0;
 	 *		NoStream = 1;
@@ -93,17 +93,17 @@ class MessageType
 	const READ_STREAM_EVENTS_BACKWARD_COMPLETED = 0xB5;
 	/**
 	 * Used with data:
-	 * EventStore\Client\Domain\Socket\Data\ReadAllEvents
+	 * Madkom\EventStore\Client\Domain\Socket\Data\ReadAllEvents
 	 */
 	const READ_ALL_EVENTS_FORWARD = 0xB6;
 	/**
 	 * Used with data:
-	 * EventStore\Client\Domain\Socket\Data\ReadAllEventsCompleted
+	 * Madkom\EventStore\Client\Domain\Socket\Data\ReadAllEventsCompleted
 	 */
 	const READ_ALL_EVENTS_FORWARD_COMPLETED = 0xB7;
 	/**
 	 * Used with data:
-	 * EventStore\Client\Domain\Socket\Data\ReadAllEvents
+	 * Madkom\EventStore\Client\Domain\Socket\Data\ReadAllEvents
 	 * 	ReadAllResult:
 	 *	Success = 0;
 	 *	NotModified = 1;
@@ -113,24 +113,24 @@ class MessageType
 	const READ_ALL_EVENTS_BACKWARD = 0xB8;
 	/**
 	 * Used with data:
-	 * EventStore\Client\Domain\Socket\Data\ReadAllEventsCompleted
+	 * Madkom\EventStore\Client\Domain\Socket\Data\ReadAllEventsCompleted
 	 */
 	const READ_ALL_EVENTS_BACKWARD_COMPLETED = 0xB9;
 
 	//192
 	/**
 	 * Used with data:
-	 * EventStore\Client\Domain\Socket\Data\SubscribeToStream
+	 * Madkom\EventStore\Client\Domain\Socket\Data\SubscribeToStream
 	 */
 	const SUBSCRIBE_TO_STREAM = 0xC0;
 	/**
 	 * Used with data:
-	 * EventStore\Client\Domain\Socket\Data\SubscriptionConfirmation
+	 * Madkom\EventStore\Client\Domain\Socket\Data\SubscriptionConfirmation
 	 */
 	const SUBSCRIPTION_CONFIRMATION = 0xC1;
 	/**
 	 * Used with data:
-	 * EventStore\Client\Domain\Socket\Data\StreamEventAppeared
+	 * Madkom\EventStore\Client\Domain\Socket\Data\StreamEventAppeared
 	 */
 	const STREAM_EVENT_APPEARED = 0xC2;
 	const UNSUBSCRIBE_FROM_STREAM = 0xC3;

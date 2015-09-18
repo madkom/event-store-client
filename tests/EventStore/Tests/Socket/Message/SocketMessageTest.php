@@ -1,7 +1,7 @@
 <?php
 
-use EventStore\Client\Domain\Socket\Message\MessageType;
-use EventStore\Client\Domain\Socket\Message\SocketMessage;
+use Madkom\EventStore\Client\Domain\Socket\Message\MessageType;
+use Madkom\EventStore\Client\Domain\Socket\Message\SocketMessage;
 use EventStore\ValueObjects\Tests\TestCase;
 use Prophecy\Argument;
 
@@ -26,7 +26,7 @@ class SocketMessageTest extends PHPUnit_Framework_TestCase
     public function setUp()
     {
         $this->messageType = new MessageType(3);
-        $this->credentials = new \EventStore\Client\Domain\Socket\Message\Credentials('test', 'pass');
+        $this->credentials = new \Madkom\EventStore\Client\Domain\Socket\Message\Credentials('test', 'pass');
 
         $protobufMessage   = $this->prophesize('\ProtobufMessage');
         $this->protobufMessage = $protobufMessage->reveal();

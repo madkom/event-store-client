@@ -5,7 +5,7 @@
  * EventStore.Socket.Proxy package
  */
 
-namespace EventStore\Client\Domain\Socket\Data\NotHandled {
+namespace Madkom\EventStore\Client\Domain\Socket\Data\NotHandled {
 /**
  * MasterInfo message embedded in NotHandled message
  */

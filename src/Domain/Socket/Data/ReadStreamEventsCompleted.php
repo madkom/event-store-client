@@ -5,7 +5,7 @@
  * EventStore.Socket.Proxy package
  */
 
-namespace EventStore\Client\Domain\Socket\Data {
+namespace Madkom\EventStore\Client\Domain\Socket\Data {
 /**
  * ReadStreamEventsCompleted message
  */
@@ -25,7 +25,7 @@ class ReadStreamEventsCompleted extends \ProtobufMessage
         self::EVENTS => array(
             'name' => 'events',
             'repeated' => true,
-            'type' => '\EventStore\Client\Domain\Socket\Data\ResolvedIndexedEvent'
+            'type' => '\Madkom\EventStore\Client\Domain\Socket\Data\ResolvedIndexedEvent'
         ),
         self::RESULT => array(
             'name' => 'result',
@@ -98,11 +98,11 @@ class ReadStreamEventsCompleted extends \ProtobufMessage
     /**
      * Appends value to 'events' list
      *
-     * @param \EventStore\Client\Domain\Socket\Data\ResolvedIndexedEvent $value Value to append
+     * @param \Madkom\EventStore\Client\Domain\Socket\Data\ResolvedIndexedEvent $value Value to append
      *
      * @return null
      */
-    public function appendEvents(\EventStore\Client\Domain\Socket\Data\ResolvedIndexedEvent $value)
+    public function appendEvents(\Madkom\EventStore\Client\Domain\Socket\Data\ResolvedIndexedEvent $value)
     {
         return $this->append(self::EVENTS, $value);
     }
@@ -120,7 +120,7 @@ class ReadStreamEventsCompleted extends \ProtobufMessage
     /**
      * Returns 'events' list
      *
-     * @return \EventStore\Client\Domain\Socket\Data\ResolvedIndexedEvent[]
+     * @return \Madkom\EventStore\Client\Domain\Socket\Data\ResolvedIndexedEvent[]
      */
     public function getEvents()
     {
@@ -142,7 +142,7 @@ class ReadStreamEventsCompleted extends \ProtobufMessage
      *
      * @param int $offset Position in list
      *
-     * @return \EventStore\Client\Domain\Socket\Data\ResolvedIndexedEvent
+     * @return \Madkom\EventStore\Client\Domain\Socket\Data\ResolvedIndexedEvent
      */
     public function getEventsAt($offset)
     {

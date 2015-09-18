@@ -1,14 +1,14 @@
 <?php
 
-namespace EventStore\Client\Domain\Socket\Communication;
+namespace Madkom\EventStore\Client\Domain\Socket\Communication;
 
-use EventStore\Client\Domain\Socket\Data\UnsubscribeFromStream;
-use EventStore\Client\Domain\Socket\Message\MessageType;
-use EventStore\Client\Domain\Socket\Communication\Type;
+use Madkom\EventStore\Client\Domain\Socket\Data\UnsubscribeFromStream;
+use Madkom\EventStore\Client\Domain\Socket\Message\MessageType;
+use Madkom\EventStore\Client\Domain\Socket\Communication\Type;
 
 /**
  * Class CommunicationFactory
- * @package EventStore\Client\Domain\Socket\Communication
+ * @package Madkom\EventStore\Client\Domain\Socket\Communication
  * @author  Dariusz Gafka <dgafka.mail@gmail.com>
  */
 class CommunicationFactory

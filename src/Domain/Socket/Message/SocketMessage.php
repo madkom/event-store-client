@@ -1,11 +1,11 @@
 <?php
 
-namespace EventStore\Client\Domain\Socket\Message;
+namespace Madkom\EventStore\Client\Domain\Socket\Message;
 
 /**
  * Class SocketMessage - Represents decoded message from socket stream
  *
- * @package EventStore\Client\Domain\Socket
+ * @package Madkom\EventStore\Client\Domain\Socket
  * @author Dariusz Gafka <dgafka.mail@gmail.com>
  */
 class SocketMessage

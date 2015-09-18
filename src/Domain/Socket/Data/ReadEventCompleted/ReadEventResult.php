@@ -4,7 +4,7 @@
  *
  * EventStore.Socket.Proxy package
  */
-namespace EventStore\Client\Domain\Socket\Data\ReadEventCompleted {
+namespace Madkom\EventStore\Client\Domain\Socket\Data\ReadEventCompleted {
 /**
  * ReadEventResult enum embedded in ReadEventCompleted message
  */

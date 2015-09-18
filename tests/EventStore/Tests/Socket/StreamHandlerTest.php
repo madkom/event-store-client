@@ -10,43 +10,43 @@ class StreamHandlerTest extends PHPUnit_Framework_TestCase
     /** @var  \Prophecy\Prophet */
     private $internalProphet;
 
-    /** @var  \EventStore\Client\Domain\Socket\Stream */
+    /** @var  \Madkom\EventStore\Client\Domain\Socket\Stream */
     private $stream;
 
-    /** @var  \EventStore\Client\Domain\Socket\Message\MessageDecomposer */
+    /** @var  \Madkom\EventStore\Client\Domain\Socket\Message\MessageDecomposer */
     private $messageDecomposer;
 
-    /** @var  \EventStore\Client\Domain\Socket\Message\MessageComposer */
+    /** @var  \Madkom\EventStore\Client\Domain\Socket\Message\MessageComposer */
     private $messageComposer;
 
-    /** @var  \EventStore\Client\Domain\Socket\StreamHandler */
+    /** @var  \Madkom\EventStore\Client\Domain\Socket\StreamHandler */
     private $streamHandler;
 
 
-    /** @var  \EventStore\Client\Domain\Socket\Message\MessageType */
+    /** @var  \Madkom\EventStore\Client\Domain\Socket\Message\MessageType */
     private $messageType;
 
-    /** @var  \EventStore\Client\Domain\Socket\Message\SocketMessage */
+    /** @var  \Madkom\EventStore\Client\Domain\Socket\Message\SocketMessage */
     private $socketMessage;
 
-    /** @var  \EventStore\Client\Domain\Socket\Communication\Communicable */
+    /** @var  \Madkom\EventStore\Client\Domain\Socket\Communication\Communicable */
     private $communicable;
 
     public function setUp()
     {
         $this->internalProphet   = new \Prophecy\Prophet();
-        $this->stream            = $this->internalProphet->prophesize('EventStore\Client\Domain\Socket\Stream');
-        $this->messageDecomposer = $this->internalProphet->prophesize('EventStore\Client\Domain\Socket\Message\MessageDecomposer');
-        $this->messageComposer   = $this->internalProphet->prophesize('EventStore\Client\Domain\Socket\Message\MessageComposer');
+        $this->stream            = $this->internalProphet->prophesize('Madkom\EventStore\Client\Domain\Socket\Stream');
+        $this->messageDecomposer = $this->internalProphet->prophesize('Madkom\EventStore\Client\Domain\Socket\Message\MessageDecomposer');
+        $this->messageComposer   = $this->internalProphet->prophesize('Madkom\EventStore\Client\Domain\Socket\Message\MessageComposer');
         $logger                  = $this->internalProphet->prophesize('Psr\Log\LoggerInterface');
 
-        $this->streamHandler = new \EventStore\Client\Domain\Socket\StreamHandler($this->stream->reveal(), $logger->reveal(), $this->messageDecomposer->reveal(), $this->messageComposer->reveal());
+        $this->streamHandler = new \Madkom\EventStore\Client\Domain\Socket\StreamHandler($this->stream->reveal(), $logger->reveal(), $this->messageDecomposer->reveal(), $this->messageComposer->reveal());
 
 
-        $messageType = $this->internalProphet->prophesize('EventStore\Client\Domain\Socket\Message\MessageType');
+        $messageType = $this->internalProphet->prophesize('Madkom\EventStore\Client\Domain\Socket\Message\MessageType');
         $this->messageType = $messageType->reveal();
 
-        $socketMessage = $this->internalProphet->prophesize('EventStore\Client\Domain\Socket\Message\SocketMessage');
+        $socketMessage = $this->internalProphet->prophesize('Madkom\EventStore\Client\Domain\Socket\Message\SocketMessage');
         $socketMessage->getMessageType()->willReturn($messageType);
         $this->socketMessage = $socketMessage;
     }
@@ -64,23 +64,23 @@ class StreamHandlerTest extends PHPUnit_Framework_TestCase
      */
     public function it_should_handle_without_response()
     {
-        $wholeMessageLength = 0 + \EventStore\Client\Domain\Socket\Message\MessageConfiguration::INT_32_LENGTH + \EventStore\Client\Domain\Socket\Message\MessageConfiguration::HEADER_LENGTH;
+        $wholeMessageLength = 0 + \Madkom\EventStore\Client\Domain\Socket\Message\MessageConfiguration::INT_32_LENGTH + \Madkom\EventStore\Client\Domain\Socket\Message\MessageConfiguration::HEADER_LENGTH;
         $buffer = new \TrafficCophp\ByteBuffer\Buffer($wholeMessageLength);
 
         $buffer->writeInt32LE(18, 0);
-        $buffer->writeInt8(\EventStore\Client\Domain\Socket\Message\MessageType::PING, \EventStore\Client\Domain\Socket\Message\MessageConfiguration::MESSAGE_TYPE_OFFSET);
-        $buffer->writeInt8(\EventStore\Client\Domain\Socket\Message\MessageConfiguration::FLAGS_NONE, \EventStore\Client\Domain\Socket\Message\MessageConfiguration::FLAG_OFFSET);
-        $buffer->write(hex2bin('12350000000000000000000000000000'), \EventStore\Client\Domain\Socket\Message\MessageConfiguration::CORRELATION_ID_OFFSET);
+        $buffer->writeInt8(\Madkom\EventStore\Client\Domain\Socket\Message\MessageType::PING, \Madkom\EventStore\Client\Domain\Socket\Message\MessageConfiguration::MESSAGE_TYPE_OFFSET);
+        $buffer->writeInt8(\Madkom\EventStore\Client\Domain\Socket\Message\MessageConfiguration::FLAGS_NONE, \Madkom\EventStore\Client\Domain\Socket\Message\MessageConfiguration::FLAG_OFFSET);
+        $buffer->write(hex2bin('12350000000000000000000000000000'), \Madkom\EventStore\Client\Domain\Socket\Message\MessageConfiguration::CORRELATION_ID_OFFSET);
 
 
-        $messageType = $this->internalProphet->prophesize('EventStore\Client\Domain\Socket\Message\MessageType');
-        $messageType->getType()->willReturn(\EventStore\Client\Domain\Socket\Message\MessageType::HEARTBEAT_RESPONSE);
+        $messageType = $this->internalProphet->prophesize('Madkom\EventStore\Client\Domain\Socket\Message\MessageType');
+        $messageType->getType()->willReturn(\Madkom\EventStore\Client\Domain\Socket\Message\MessageType::HEARTBEAT_RESPONSE);
         $this->socketMessage->getMessageType()->willReturn($messageType->reveal());
         $this->socketMessage->reveal();
 
         $this->messageDecomposer->decomposeMessage((string)$buffer)->willReturn($this->socketMessage);
 
-        PHPUnit_Framework_Assert::assertInstanceOf('EventStore\Client\Domain\Socket\Message\SocketMessage', $this->streamHandler->handle((string)$buffer));
+        PHPUnit_Framework_Assert::assertInstanceOf('Madkom\EventStore\Client\Domain\Socket\Message\SocketMessage', $this->streamHandler->handle((string)$buffer));
     }
 
     /**
@@ -88,17 +88,17 @@ class StreamHandlerTest extends PHPUnit_Framework_TestCase
      */
     public function it_should_handle_with_response()
     {
-        $wholeMessageLength = 0 + \EventStore\Client\Domain\Socket\Message\MessageConfiguration::INT_32_LENGTH + \EventStore\Client\Domain\Socket\Message\MessageConfiguration::HEADER_LENGTH;
+        $wholeMessageLength = 0 + \Madkom\EventStore\Client\Domain\Socket\Message\MessageConfiguration::INT_32_LENGTH + \Madkom\EventStore\Client\Domain\Socket\Message\MessageConfiguration::HEADER_LENGTH;
         $buffer = new \TrafficCophp\ByteBuffer\Buffer($wholeMessageLength);
 
         $buffer->writeInt32LE(18, 0);
-        $buffer->writeInt8(\EventStore\Client\Domain\Socket\Message\MessageType::PING, \EventStore\Client\Domain\Socket\Message\MessageConfiguration::MESSAGE_TYPE_OFFSET);
-        $buffer->writeInt8(\EventStore\Client\Domain\Socket\Message\MessageConfiguration::FLAGS_NONE, \EventStore\Client\Domain\Socket\Message\MessageConfiguration::FLAG_OFFSET);
-        $buffer->write(hex2bin('12350000000000000000000000000000'), \EventStore\Client\Domain\Socket\Message\MessageConfiguration::CORRELATION_ID_OFFSET);
+        $buffer->writeInt8(\Madkom\EventStore\Client\Domain\Socket\Message\MessageType::PING, \Madkom\EventStore\Client\Domain\Socket\Message\MessageConfiguration::MESSAGE_TYPE_OFFSET);
+        $buffer->writeInt8(\Madkom\EventStore\Client\Domain\Socket\Message\MessageConfiguration::FLAGS_NONE, \Madkom\EventStore\Client\Domain\Socket\Message\MessageConfiguration::FLAG_OFFSET);
+        $buffer->write(hex2bin('12350000000000000000000000000000'), \Madkom\EventStore\Client\Domain\Socket\Message\MessageConfiguration::CORRELATION_ID_OFFSET);
 
 
-        $messageTypeChanged = $this->internalProphet->prophesize('EventStore\Client\Domain\Socket\Message\MessageType');
-        $messageTypeChanged->getType()->willReturn(\EventStore\Client\Domain\Socket\Message\MessageType::HEARTBEAT_REQUEST);
+        $messageTypeChanged = $this->internalProphet->prophesize('Madkom\EventStore\Client\Domain\Socket\Message\MessageType');
+        $messageTypeChanged->getType()->willReturn(\Madkom\EventStore\Client\Domain\Socket\Message\MessageType::HEARTBEAT_REQUEST);
         $messageTypeChanged = $messageTypeChanged->reveal();
         $this->socketMessage->getMessageType()->willReturn($messageTypeChanged);
         $this->socketMessage->getCorrelationID()->willReturn('some');
@@ -106,11 +106,11 @@ class StreamHandlerTest extends PHPUnit_Framework_TestCase
         $this->messageDecomposer->decomposeMessage((string)$buffer)->willReturn($this->socketMessage->reveal());
 
 
-        $this->messageComposer->compose(\Prophecy\Argument::type('EventStore\Client\Domain\Socket\Message\SocketMessage'))->willReturn('someBinary');
+        $this->messageComposer->compose(\Prophecy\Argument::type('Madkom\EventStore\Client\Domain\Socket\Message\SocketMessage'))->willReturn('someBinary');
         $this->stream->write('someBinary')->shouldBeCalledTimes(1);
         $this->stream->reveal();
 
-        PHPUnit_Framework_Assert::assertInstanceOf('EventStore\Client\Domain\Socket\Message\SocketMessage', $this->streamHandler->handle((string)$buffer));
+        PHPUnit_Framework_Assert::assertInstanceOf('Madkom\EventStore\Client\Domain\Socket\Message\SocketMessage', $this->streamHandler->handle((string)$buffer));
     }
 
     /**

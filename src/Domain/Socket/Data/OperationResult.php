@@ -4,7 +4,7 @@
  *
  * EventStore.Socket.Proxy package
  */
-namespace EventStore\Client\Domain\Socket\Data {
+namespace Madkom\EventStore\Client\Domain\Socket\Data {
 /**
  * OperationResult enum
  */

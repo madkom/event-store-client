@@ -5,7 +5,7 @@
  * EventStore.Socket.Proxy package
  */
 
-namespace EventStore\Client\Domain\Socket\Data {
+namespace Madkom\EventStore\Client\Domain\Socket\Data {
 /**
  * StreamEventAppeared message
  */
@@ -19,7 +19,7 @@ class StreamEventAppeared extends \ProtobufMessage
         self::EVENT => array(
             'name' => 'event',
             'required' => true,
-            'type' => '\EventStore\Client\Domain\Socket\Data\ResolvedEvent'
+            'type' => '\Madkom\EventStore\Client\Domain\Socket\Data\ResolvedEvent'
         ),
     );
 
@@ -56,11 +56,11 @@ class StreamEventAppeared extends \ProtobufMessage
     /**
      * Sets value of 'event' property
      *
-     * @param \EventStore\Client\Domain\Socket\Data\ResolvedEvent $value Property value
+     * @param \Madkom\EventStore\Client\Domain\Socket\Data\ResolvedEvent $value Property value
      *
      * @return null
      */
-    public function setEvent(\EventStore\Client\Domain\Socket\Data\ResolvedEvent $value)
+    public function setEvent(\Madkom\EventStore\Client\Domain\Socket\Data\ResolvedEvent $value)
     {
         return $this->set(self::EVENT, $value);
     }
@@ -68,7 +68,7 @@ class StreamEventAppeared extends \ProtobufMessage
     /**
      * Returns value of 'event' property
      *
-     * @return \EventStore\Client\Domain\Socket\Data\ResolvedEvent
+     * @return \Madkom\EventStore\Client\Domain\Socket\Data\ResolvedEvent
      */
     public function getEvent()
     {

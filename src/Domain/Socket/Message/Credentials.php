@@ -1,10 +1,10 @@
 <?php
 
-namespace EventStore\Client\Domain\Socket\Message;
+namespace Madkom\EventStore\Client\Domain\Socket\Message;
 
 /**
  * Class Credentials
- * @package EventStore\Client\Domain\Socket\Message
+ * @package Madkom\EventStore\Client\Domain\Socket\Message
  * @author  Dariusz Gafka <d.gafka@madkom.pl>
  */
 class Credentials

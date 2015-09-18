@@ -1,12 +1,12 @@
 <?php
 
-namespace EventStore\Client\Infrastructure;
+namespace Madkom\EventStore\Client\Infrastructure;
 
 use Psr\Log\LoggerInterface;
 
 /**
  * Class InMemoryLogger
- * @package EventStore\Client\Infrastructure
+ * @package Madkom\EventStore\Client\Infrastructure
  * @author  Dariusz Gafka <d.gafka@madkom.pl>
  */
 class InMemoryLogger implements LoggerInterface

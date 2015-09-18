@@ -31,7 +31,7 @@
     },
     "autoload": {
         "psr-4": {
-            "EventStore\\Client\\": "src/"
+            "Madkom\\EventStore\\Client\\": "src/"
         }
     }
 }

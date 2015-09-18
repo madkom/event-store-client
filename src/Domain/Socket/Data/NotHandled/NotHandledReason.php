@@ -4,7 +4,7 @@
  *
  * EventStore.Socket.Proxy package
  */
-namespace EventStore\Client\Domain\Socket\Data\NotHandled {
+namespace Madkom\EventStore\Client\Domain\Socket\Data\NotHandled {
 /**
  * NotHandledReason enum embedded in NotHandled message
  */

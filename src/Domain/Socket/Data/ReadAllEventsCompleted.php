@@ -5,7 +5,7 @@
  * EventStore.Socket.Proxy package
  */
 
-namespace EventStore\Client\Domain\Socket\Data {
+namespace Madkom\EventStore\Client\Domain\Socket\Data {
 /**
  * ReadAllEventsCompleted message
  */
@@ -35,7 +35,7 @@ class ReadAllEventsCompleted extends \ProtobufMessage
         self::EVENTS => array(
             'name' => 'events',
             'repeated' => true,
-            'type' => '\EventStore\Client\Domain\Socket\Data\ResolvedEvent'
+            'type' => '\Madkom\EventStore\Client\Domain\Socket\Data\ResolvedEvent'
         ),
         self::NEXT_COMMIT_POSITION => array(
             'name' => 'next_commit_position',
@@ -48,7 +48,7 @@ class ReadAllEventsCompleted extends \ProtobufMessage
             'type' => 5,
         ),
         self::RESULT => array(
-            'default' => \EventStore\Client\Domain\Socket\Data\ReadAllEventsCompleted\ReadAllResult::Success,
+            'default' => \Madkom\EventStore\Client\Domain\Socket\Data\ReadAllEventsCompleted\ReadAllResult::Success,
             'name' => 'result',
             'required' => false,
             'type' => 5,
@@ -82,7 +82,7 @@ class ReadAllEventsCompleted extends \ProtobufMessage
         $this->values[self::EVENTS] = array();
         $this->values[self::NEXT_COMMIT_POSITION] = null;
         $this->values[self::NEXT_PREPARE_POSITION] = null;
-        $this->values[self::RESULT] = \EventStore\Client\Domain\Socket\Data\ReadAllEventsCompleted\ReadAllResult::Success;
+        $this->values[self::RESULT] = \Madkom\EventStore\Client\Domain\Socket\Data\ReadAllEventsCompleted\ReadAllResult::Success;
         $this->values[self::ERROR] = null;
     }
 
@@ -143,11 +143,11 @@ class ReadAllEventsCompleted extends \ProtobufMessage
     /**
      * Appends value to 'events' list
      *
-     * @param \EventStore\Client\Domain\Socket\Data\ResolvedEvent $value Value to append
+     * @param \Madkom\EventStore\Client\Domain\Socket\Data\ResolvedEvent $value Value to append
      *
      * @return null
      */
-    public function appendEvents(\EventStore\Client\Domain\Socket\Data\ResolvedEvent $value)
+    public function appendEvents(\Madkom\EventStore\Client\Domain\Socket\Data\ResolvedEvent $value)
     {
         return $this->append(self::EVENTS, $value);
     }
@@ -165,7 +165,7 @@ class ReadAllEventsCompleted extends \ProtobufMessage
     /**
      * Returns 'events' list
      *
-     * @return \EventStore\Client\Domain\Socket\Data\ResolvedEvent[]
+     * @return \Madkom\EventStore\Client\Domain\Socket\Data\ResolvedEvent[]
      */
     public function getEvents()
     {
@@ -187,7 +187,7 @@ class ReadAllEventsCompleted extends \ProtobufMessage
      *
      * @param int $offset Position in list
      *
-     * @return \EventStore\Client\Domain\Socket\Data\ResolvedEvent
+     * @return \Madkom\EventStore\Client\Domain\Socket\Data\ResolvedEvent
      */
     public function getEventsAt($offset)
     {

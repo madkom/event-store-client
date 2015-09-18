@@ -1,9 +1,9 @@
 <?php
 
-use EventStore\Client\Domain\Socket\Message\MessageComposer;
-use EventStore\Client\Domain\Socket\Message\MessageConfiguration;
-use EventStore\Client\Domain\Socket\Message\MessageType;
-use EventStore\Client\Domain\Socket\Message\SocketMessage;
+use Madkom\EventStore\Client\Domain\Socket\Message\MessageComposer;
+use Madkom\EventStore\Client\Domain\Socket\Message\MessageConfiguration;
+use Madkom\EventStore\Client\Domain\Socket\Message\MessageType;
+use Madkom\EventStore\Client\Domain\Socket\Message\SocketMessage;
 use TrafficCophp\ByteBuffer\Buffer;
 
 /**
@@ -25,7 +25,7 @@ class MessageComposerTest extends \PHPUnit_Framework_TestCase
         $this->messageComposer = new MessageComposer();
 
         /** @var SocketMessage $socketMessage */
-        $socketMessage = $this->prophesize('EventStore\Client\Domain\Socket\Message\SocketMessage');
+        $socketMessage = $this->prophesize('Madkom\EventStore\Client\Domain\Socket\Message\SocketMessage');
         $socketMessage->getData()->willReturn(null);
         $socketMessage->getMessageType()->willReturn(new MessageType(MessageType::HEARTBEAT_REQUEST));
         $socketMessage->getCorrelationID()->willReturn('1235');

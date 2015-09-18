@@ -5,7 +5,7 @@
  * EventStore.Socket.Proxy package
  */
 
-namespace EventStore\Client\Domain\Socket\Data {
+namespace Madkom\EventStore\Client\Domain\Socket\Data {
 /**
  * ReadEventCompleted message
  */
@@ -26,7 +26,7 @@ class ReadEventCompleted extends \ProtobufMessage
         self::EVENT => array(
             'name' => 'event',
             'required' => true,
-            'type' => '\EventStore\Client\Domain\Socket\Data\ResolvedIndexedEvent'
+            'type' => '\Madkom\EventStore\Client\Domain\Socket\Data\ResolvedIndexedEvent'
         ),
         self::ERROR => array(
             'name' => 'error',
@@ -92,11 +92,11 @@ class ReadEventCompleted extends \ProtobufMessage
     /**
      * Sets value of 'event' property
      *
-     * @param \EventStore\Client\Domain\Socket\Data\ResolvedIndexedEvent $value Property value
+     * @param \Madkom\EventStore\Client\Domain\Socket\Data\ResolvedIndexedEvent $value Property value
      *
      * @return null
      */
-    public function setEvent(\EventStore\Client\Domain\Socket\Data\ResolvedIndexedEvent $value)
+    public function setEvent(\Madkom\EventStore\Client\Domain\Socket\Data\ResolvedIndexedEvent $value)
     {
         return $this->set(self::EVENT, $value);
     }
@@ -104,7 +104,7 @@ class ReadEventCompleted extends \ProtobufMessage
     /**
      * Returns value of 'event' property
      *
-     * @return \EventStore\Client\Domain\Socket\Data\ResolvedIndexedEvent
+     * @return \Madkom\EventStore\Client\Domain\Socket\Data\ResolvedIndexedEvent
      */
     public function getEvent()
     {

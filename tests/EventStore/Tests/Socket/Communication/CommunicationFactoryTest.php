@@ -7,12 +7,12 @@
 class CommunicationFactoryTest extends PHPUnit_Framework_TestCase
 {
 
-    /** @var  \EventStore\Client\Domain\Socket\Communication\CommunicationFactory */
+    /** @var  \Madkom\EventStore\Client\Domain\Socket\Communication\CommunicationFactory */
     private $communicationFactory;
 
     public function setUp()
     {
-        $this->communicationFactory = new \EventStore\Client\Domain\Socket\Communication\CommunicationFactory();
+        $this->communicationFactory = new \Madkom\EventStore\Client\Domain\Socket\Communication\CommunicationFactory();
     }
 
     /**
@@ -20,10 +20,10 @@ class CommunicationFactoryTest extends PHPUnit_Framework_TestCase
      */
     public function it_should_create_new_communication()
     {
-        $messageType = $this->prophesize('EventStore\Client\Domain\Socket\Message\MessageType');
-        $messageType->getType()->willReturn(\EventStore\Client\Domain\Socket\Message\MessageType::HEARTBEAT_REQUEST);
+        $messageType = $this->prophesize('Madkom\EventStore\Client\Domain\Socket\Message\MessageType');
+        $messageType->getType()->willReturn(\Madkom\EventStore\Client\Domain\Socket\Message\MessageType::HEARTBEAT_REQUEST);
 
-        PHPUnit_Framework_Assert::assertInstanceOf('EventStore\Client\Domain\Socket\Communication\Type\HeartBeatRequestHandler', $this->communicationFactory->create($messageType->reveal()));
+        PHPUnit_Framework_Assert::assertInstanceOf('Madkom\EventStore\Client\Domain\Socket\Communication\Type\HeartBeatRequestHandler', $this->communicationFactory->create($messageType->reveal()));
     }
 
 }

@@ -5,7 +5,7 @@
  * EventStore.Socket.Proxy package
  */
 
-namespace EventStore\Client\Domain\Socket\Data {
+namespace Madkom\EventStore\Client\Domain\Socket\Data {
 /**
  * WriteEvents message
  */
@@ -32,7 +32,7 @@ class WriteEvents extends \ProtobufMessage
         self::EVENTS => array(
             'name' => 'events',
             'repeated' => true,
-            'type' => '\EventStore\Client\Domain\Socket\Data\NewEvent'
+            'type' => '\Madkom\EventStore\Client\Domain\Socket\Data\NewEvent'
         ),
         self::REQUIRE_MASTER => array(
             'name' => 'require_master',
@@ -121,11 +121,11 @@ class WriteEvents extends \ProtobufMessage
     /**
      * Appends value to 'events' list
      *
-     * @param \EventStore\Client\Domain\Socket\Data\NewEvent $value Value to append
+     * @param \Madkom\EventStore\Client\Domain\Socket\Data\NewEvent $value Value to append
      *
      * @return null
      */
-    public function appendEvents(\EventStore\Client\Domain\Socket\Data\NewEvent $value)
+    public function appendEvents(\Madkom\EventStore\Client\Domain\Socket\Data\NewEvent $value)
     {
         return $this->append(self::EVENTS, $value);
     }
@@ -143,7 +143,7 @@ class WriteEvents extends \ProtobufMessage
     /**
      * Returns 'events' list
      *
-     * @return \EventStore\Client\Domain\Socket\Data\NewEvent[]
+     * @return \Madkom\EventStore\Client\Domain\Socket\Data\NewEvent[]
      */
     public function getEvents()
     {
@@ -165,7 +165,7 @@ class WriteEvents extends \ProtobufMessage
      *
      * @param int $offset Position in list
      *
-     * @return \EventStore\Client\Domain\Socket\Data\NewEvent
+     * @return \Madkom\EventStore\Client\Domain\Socket\Data\NewEvent
      */
     public function getEventsAt($offset)
     {

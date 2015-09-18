@@ -1,8 +1,8 @@
 <?php
 
-use EventStore\Client\Domain\Socket\Message\MessageConfiguration;
-use EventStore\Client\Domain\Socket\Message\MessageDecomposer;
-use EventStore\Client\Domain\Socket\Message\MessageType;
+use Madkom\EventStore\Client\Domain\Socket\Message\MessageConfiguration;
+use Madkom\EventStore\Client\Domain\Socket\Message\MessageDecomposer;
+use Madkom\EventStore\Client\Domain\Socket\Message\MessageType;
 use TrafficCophp\ByteBuffer\Buffer;
 
 /**
@@ -17,11 +17,11 @@ class MessageDecomposerTest extends \PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $communicable = $this->prophesize('EventStore\Client\Domain\Socket\Communication\Type\PongHandler');
-        $communicable->handle(\Prophecy\Argument::type('EventStore\Client\Domain\Socket\Message\MessageType'), '12350000000000000000000000000000', '')->willReturn('done');
+        $communicable = $this->prophesize('Madkom\EventStore\Client\Domain\Socket\Communication\Type\PongHandler');
+        $communicable->handle(\Prophecy\Argument::type('Madkom\EventStore\Client\Domain\Socket\Message\MessageType'), '12350000000000000000000000000000', '')->willReturn('done');
 
-        $communicationFactory = $this->prophesize('EventStore\Client\Domain\Socket\Communication\CommunicationFactory');
-        $communicationFactory->create(\Prophecy\Argument::type('EventStore\Client\Domain\Socket\Message\MessageType'))->willReturn($communicable->reveal());
+        $communicationFactory = $this->prophesize('Madkom\EventStore\Client\Domain\Socket\Communication\CommunicationFactory');
+        $communicationFactory->create(\Prophecy\Argument::type('Madkom\EventStore\Client\Domain\Socket\Message\MessageType'))->willReturn($communicable->reveal());
 
 
         $this->messageDecomposer = new MessageDecomposer($communicationFactory->reveal());
