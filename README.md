@@ -3,7 +3,7 @@ Event Store Client
 
 Client for [event store](https://geteventstore.com/) TCP Api
 
-[![Build Status](https://travis-ci.org/madkom/event-source-client.svg)](https://travis-ci.org/madkom/event-source-client)
+[![Build Status](https://travis-ci.org/madkom/event-store-client.svg?branch=master)](https://travis-ci.org/madkom/event-store-client)
 
 ---
 
