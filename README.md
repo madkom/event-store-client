@@ -1,3 +1,4 @@
+[![Stories in Ready](https://badge.waffle.io/madkom/event-store-client.png?label=ready&title=Ready)](https://waffle.io/madkom/event-store-client)
 Event Store Client
 ==================
 
