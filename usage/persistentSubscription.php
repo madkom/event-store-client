@@ -8,6 +8,7 @@ use Madkom\EventStore\Client\Domain\Socket\Data\PersistentSubscriptionStreamEven
 use Madkom\EventStore\Client\Domain\Socket\Message\Credentials;
 use Madkom\EventStore\Client\Domain\Socket\Message\MessageType;
 use Madkom\EventStore\Client\Domain\Socket\Message\SocketMessage;
+use Madkom\EventStore\Client\Infrastructure\InMemoryLogger;
 use Madkom\EventStore\Client\Infrastructure\ReactStream;
 
 require_once('../vendor/autoload.php');
@@ -24,7 +25,7 @@ $resolvedConnection->then(
     function (React\Stream\Stream $stream) use ($loop) {
         $eventStore = new EventStore(
             new ReactStream($stream),
-            $this->logger
+            new InMemoryLogger()
         );
 
         $subscriptionId = '';
@@ -96,3 +97,5 @@ $resolvedConnection->then(
         $loop->stop();
     }
 );
+
+$loop->run();
