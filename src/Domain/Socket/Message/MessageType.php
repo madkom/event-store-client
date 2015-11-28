@@ -21,11 +21,25 @@ class MessageType
 	const PING = 0x03;
 	const PONG = 0x04;
 
+	const PREPARE_ACK = 0x05;
+	const COMMIT_ACK = 0x06;
+
+	const SLAVE_ASSIGNMENT = 0x07;
+	const CLONE_ASSIGNMENT = 0x08;
+
+	const SUBSCRIBE_REPLICA = 0x10;
+	const REPLICA_SUBSCRIBTION_ACK = 0x11;
+	const CREATE_CHUNK = 0x12;
+	const RAW_CHUNK_BULK = 0x13;
+	const DATA_CHUNK_BULK = 0x14;
+	const REPLICA_SUBSCRIPTION_ENTRY = 0x15;
+	const REPLICA_SUBSCRIBED = 0x16;
 
 //	Turned off, because writing first event to an stream, creates it.
-//	const CREATE_STREAM = 0x80,
-//	const CREATE_STREAM_COMPLETED = 0x81;
+//	const CREATE_STREAM = 0x82,
+//	const CREATE_STREAM_COMPLETED = 0x83;
 	//130
+
 	/**
 	 * Used with data:
 	 * Madkom\EventStore\Client\Domain\Socket\Data\WriteEvents
@@ -36,6 +50,7 @@ class MessageType
 	 *
 	 */
 	const WRITE_EVENTS =  0x82;
+
 	/**
 	 * Used with data:
 	 * Madkom\EventStore\Client\Domain\Socket\Data\WriteEventsCompleted
@@ -140,6 +155,21 @@ class MessageType
 	 * 	AccessDenied = 1;
 	 */
 	const SUBSCRIPTION_DROPPED = 0xC4;
+
+	const CONNECT_TO_PERSISTENT_SUBSCRIPTION = 0xC5;
+	const PERSISTENT_SUBSCRIPTION_CONFIRMATION = 0xC6;
+	const PERSISTENT_SUBSCRIPTION_STREAM_EVENT_APPEARED = 0xC7;
+	const CREATE_PERSISTENT_SUBSCRIPTION = 0xC8;
+	const CREATE_PERSISTENT_SUBSCRIPTION_COMPLETED = 0xC9;
+	const DELETE_PERSISTENT_SUBSCRIPTION = 0xCA;
+	const DELETE_PERSISTENT_SUBSCRIPTION_COMPLETED = 0xCB;
+	const PERSISTENT_SUBSCRIPTION_ACK_EVENTS = 0xCC;
+	const PERSISTENT_SUBSCRIPTION_NACK_EVENTS = 0xCD;
+	const UPDATE_PERSISTENT_SUBSCRIPTION = 0xCE;
+	const UPDATE_PERSISTENT_SUBSCRIPTION_COMPLETED = 0xCF;
+
+	const SCAVENGE_DATABASE = 0xD0;
+	const SCAVENGE_DATABASE_COMPLETED = 0xD1;
 
 	//240
 	const BAD_REQUEST = 0xF0;
