@@ -2,7 +2,6 @@
 
 namespace Madkom\EventStore\Client\Application\Api;
 
-use Doctrine\Instantiator\Exception\InvalidArgumentException;
 use Madkom\EventStore\Client\Domain\Socket\Communication\CommunicationFactory;
 use Madkom\EventStore\Client\Domain\Socket\Message\MessageComposer;
 use Madkom\EventStore\Client\Domain\Socket\Message\MessageDecomposer;
@@ -61,7 +60,7 @@ class EventStore
         $messageType = new MessageType($messageType);
 
         if(array_key_exists($messageType->getType(), $this->actionsToRun)) {
-           throw new InvalidArgumentException($messageType->getType() . ' is already registered');
+           throw new \InvalidArgumentException($messageType->getType() . ' is already registered');
         }
 
         $this->actionsToRun[$messageType->getType()] = $callback;
