@@ -45,6 +45,15 @@ class CommunicationFactory
             case MessageType::SUBSCRIPTION_CONFIRMATION:
                 $communicable = new Type\SubscriptionConfirmationHandler();
                 break;
+            case MessageType::SUBSCRIPTION_DROPPED:
+                $communicable = new Type\SubscriptionDroppedHandler();
+                break;
+            case MessageType::PERSISTENT_SUBSCRIPTION_CONFIRMATION:
+                $communicable = new Type\PersistentSubscriptionConfirmationHandler();
+                break;
+            case MessageType::PERSISTENT_SUBSCRIPTION_STREAM_EVENT_APPEARED:
+                $communicable = new Type\PersistentSubscriptionStreamEventAppearedHandler();
+                break;
             case MessageType::BAD_REQUEST:
                 $communicable = new Type\BadRequestHandler();
                 break;
