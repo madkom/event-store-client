@@ -1,10 +1,10 @@
-[![Stories in Ready](https://badge.waffle.io/madkom/event-store-client.png?label=ready&title=Ready)](https://waffle.io/madkom/event-store-client)
 Event Store Client
 ==================
 
 Client for [event store](https://geteventstore.com/) TCP Api
 
 [![Build Status](https://travis-ci.org/madkom/event-store-client.svg?branch=master)](https://travis-ci.org/madkom/event-store-client)
+[![Stories in Ready](https://badge.waffle.io/madkom/event-store-client.png?label=ready&title=Ready)](https://waffle.io/madkom/event-store-client)
 
 ---
 
@@ -46,4 +46,3 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
->>>>>>> 241239459f59bc5f29c1097e387b4bc7fe63d811
