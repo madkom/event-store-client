@@ -78,7 +78,7 @@ class StreamHandler
                 }
 
                 if($dataLength > $messageLength) {
-                    $this->currentMessage = substr($data, $messageLength + 1, $dataLength);
+                    $this->currentMessage = substr($data, $messageLength, $dataLength);
 
                     return $this->decomposeMessage(substr($data, 0, $messageLength));
                 }
