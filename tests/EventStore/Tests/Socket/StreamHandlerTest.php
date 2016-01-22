@@ -82,7 +82,7 @@ class StreamHandlerTest extends PHPUnit_Framework_TestCase
 
         PHPUnit_Framework_Assert::assertInstanceOf('Madkom\EventStore\Client\Domain\Socket\Message\SocketMessage', $this->streamHandler->handle((string)$buffer));
     }
-
+ 
     /**
      * @test
      */
@@ -111,6 +111,47 @@ class StreamHandlerTest extends PHPUnit_Framework_TestCase
         $this->stream->reveal();
 
         PHPUnit_Framework_Assert::assertInstanceOf('Madkom\EventStore\Client\Domain\Socket\Message\SocketMessage', $this->streamHandler->handle((string)$buffer));
+    }
+
+    /**
+     * @test
+     */
+    public function it_should_handle_split_messages()
+    {
+        // Create 2 messages
+        $wholeMessageLength = 0 + \Madkom\EventStore\Client\Domain\Socket\Message\MessageConfiguration::INT_32_LENGTH + \Madkom\EventStore\Client\Domain\Socket\Message\MessageConfiguration::HEADER_LENGTH;
+        $buffer1 = new \TrafficCophp\ByteBuffer\Buffer($wholeMessageLength);
+        $buffer1->writeInt32LE(18, 0);
+        $buffer1->writeInt8(\Madkom\EventStore\Client\Domain\Socket\Message\MessageType::PING, \Madkom\EventStore\Client\Domain\Socket\Message\MessageConfiguration::MESSAGE_TYPE_OFFSET);
+        $buffer1->writeInt8(\Madkom\EventStore\Client\Domain\Socket\Message\MessageConfiguration::FLAGS_NONE, \Madkom\EventStore\Client\Domain\Socket\Message\MessageConfiguration::FLAG_OFFSET);
+        $buffer1->write(hex2bin('12350000000000000000000000000000'), \Madkom\EventStore\Client\Domain\Socket\Message\MessageConfiguration::CORRELATION_ID_OFFSET);
+
+        $buffer2 = new \TrafficCophp\ByteBuffer\Buffer($wholeMessageLength);
+        $buffer2->writeInt32LE(18, 0);
+        $buffer2->writeInt8(\Madkom\EventStore\Client\Domain\Socket\Message\MessageType::PING, \Madkom\EventStore\Client\Domain\Socket\Message\MessageConfiguration::MESSAGE_TYPE_OFFSET);
+        $buffer2->writeInt8(\Madkom\EventStore\Client\Domain\Socket\Message\MessageConfiguration::FLAGS_NONE, \Madkom\EventStore\Client\Domain\Socket\Message\MessageConfiguration::FLAG_OFFSET);
+        $buffer2->write(hex2bin('12350000000000000000000000000000'), \Madkom\EventStore\Client\Domain\Socket\Message\MessageConfiguration::CORRELATION_ID_OFFSET);
+
+    
+        $messageType = $this->internalProphet->prophesize('Madkom\EventStore\Client\Domain\Socket\Message\MessageType');
+        $messageType->getType()->willReturn(\Madkom\EventStore\Client\Domain\Socket\Message\MessageType::PING);
+        $this->socketMessage->getMessageType()->willReturn($messageType->reveal());
+        $this->socketMessage->reveal();
+  
+        $buffer = (string)$buffer1 . (string)$buffer2;
+      
+        // Split the messages 
+        $totalBufferLength = strlen($buffer);
+        $firstBuffer = substr($buffer, 0, $totalBufferLength-10);
+        $firstBufferLength = strlen($firstBuffer);
+        $secondBuffer = substr($buffer, $totalBufferLength-10);
+        $secondBufferLength = strlen($secondBuffer);
+
+        $this->messageDecomposer->decomposeMessage((string)$buffer1)->willReturn($this->socketMessage);
+        PHPUnit_Framework_Assert::assertInstanceOf('Madkom\EventStore\Client\Domain\Socket\Message\SocketMessage', $this->streamHandler->handle($firstBuffer));
+
+        $this->messageDecomposer->decomposeMessage((string)$buffer2)->willReturn($this->socketMessage);
+        PHPUnit_Framework_Assert::assertInstanceOf('Madkom\EventStore\Client\Domain\Socket\Message\SocketMessage', $this->streamHandler->handle($secondBuffer));
     }
 
     /**
