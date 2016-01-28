@@ -68,39 +68,35 @@ class StreamHandler
                 return null;
             }
 
-            if (is_null($this->currentMessage)) {
+            $socketMessages = array();
+
+            if (!is_null($this->currentMessage)) {
+                $data = $this->currentMessage . $data;
+            }
+
+            do {
                 $buffer          = new Buffer($data);
                 $dataLength      = strlen($data);
                 $messageLength   = $buffer->readInt32LE(0) + MessageConfiguration::INT_32_LENGTH;
 
-                if($dataLength == $messageLength) {
-                    return $this->decomposeMessage($data);
+                if ($dataLength == $messageLength)
+                {
+                    $socketMessages[] = $this->decomposeMessage($data);
+                    $this->currentMessage = null;
+                } elseif($dataLength > $messageLength) {
+                    $message = substr($data, 0, $messageLength);
+                    $socketMessages[] = $this->decomposeMessage($message);
+
+                    // reset data to next message
+                    $data = substr($data, $messageLength, $dataLength);
+                    $this->currentMessage = null;
+                } else {
+                    $this->currentMessage .= $data;
                 }
 
-                if($dataLength > $messageLength) {
-                    $this->currentMessage = substr($data, $messageLength, $dataLength);
+            } while ($dataLength > $messageLength);
 
-                    return $this->decomposeMessage(substr($data, 0, $messageLength));
-                }
-
-                $this->currentMessage = $this->currentMessage . $data;
-                return null;
-            }
-
-
-            $buffer          = new Buffer($this->currentMessage);
-            $messageLength   = $buffer->readInt32LE(0) + MessageConfiguration::INT_32_LENGTH;
-
-            $mergedMessages  = $this->currentMessage . $data;
-            $dataLength      = strlen($mergedMessages);
-
-            if($messageLength <= $dataLength) {
-                $this->currentMessage = null;
-                return $this->decomposeMessage($mergedMessages);
-            }
-
-            $this->currentMessage .= $data;
-            return null;
+            return $socketMessages;
 
         }catch (\Exception $e) {
             $this->logger->critical('Error during handling incoming message.'.  ' Message Error: ' . $e->getMessage());

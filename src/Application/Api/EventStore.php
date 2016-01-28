@@ -76,15 +76,19 @@ class EventStore
 
         $this->stream->onData(function($data) use($streamHandler, $actionsToRun) {
 
-            $socketMessage = $streamHandler->handle($data);
-            if(is_null($socketMessage)) {
+            $socketMessages = $streamHandler->handle($data);
+
+            if(sizeof($socketMessages) == 0) {
                 return;
             }
-            foreach ($actionsToRun as $key => $callback) {
-               if ($key === $socketMessage->getMessageType()->getType()) {
+            /** @var SocketMessage $socketMessage */
+            foreach ($socketMessages as $socketMessage) {
+                $messageType = $socketMessage->getMessageType()->getType();
+                if (array_key_exists($messageType, $actionsToRun)) {
+                    $callback = $actionsToRun[$messageType];
                     $callback($socketMessage);
-                    return;
-               }
+                }
+
             }
         });
     }
