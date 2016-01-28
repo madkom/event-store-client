@@ -1,0 +1,13 @@
+eventstore:
+  image: madkom/eventstore-docker
+  ports:
+    - "1113:1113"
+  volumes:
+    - "./storage/db:/data/db"
+    - "./storage/logs:/data/logs"
+php-protobuf:
+  image: madkom/php-protobuf
+  volumes:
+    - "./:/var/www"
+  links:
+    - "eventstore:es"
