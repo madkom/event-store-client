@@ -11,7 +11,7 @@ use Madkom\EventStore\Client\Domain\Socket\Message\SocketMessage;
 use Madkom\EventStore\Client\Infrastructure\InMemoryLogger;
 use Madkom\EventStore\Client\Infrastructure\ReactStream;
 
-require_once('../vendor/autoload.php');
+require_once(__DIR__ .  '/../vendor/autoload.php');
 
 $loop = React\EventLoop\Factory::create();
 

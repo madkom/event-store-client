@@ -1,5 +1,5 @@
 <?php
-require_once('../vendor/autoload.php');
+require_once(__DIR__ .  '/../vendor/autoload.php');
 
 /**
     Example is used with React stream, but you can use whatever library you want to as long as it implement Madkom\EventStore\Client\Domain\Socket\Stream
