@@ -21,7 +21,11 @@ It is very fast library for building stream data ready to send over sockets.
 
 ### Example usage
 Can be found [here](https://github.com/madkom/event-source-client/blob/master/usage/usageExample.php)
-
+If you have running event store instance and protobuf extension installed, you can replace `gethostbyname('es')` in usages with your ES's IP.  
+Otherwise if you don't have running instance of event store. You can run it by using `docker`.    
+With following command: `docker-compose up` and log in to the php+protobuf container by using command:
+- docker exec -it eventstoreclient_php-protobuf_1 /bin/bash
+- php /var/www/usage/usageExample.php
 
 ## License
 
