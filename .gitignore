@@ -1,5 +1,5 @@
 .idea/
 bin/
 vendor/
-#storage/
+storage/
 !storage/.gitkeep
