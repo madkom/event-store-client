@@ -20,7 +20,7 @@ $dns = $dnsResolverFactory->createCached(null, $loop);
 
 $connector = new React\SocketClient\Connector($loop, $dns);
 
-$resolvedConnection = $connector->create('127.0.0.1', 1113);
+$resolvedConnection = $connector->create(gethostbyname('es'), 1113);
 $resolvedConnection->then(
     function (React\Stream\Stream $stream) use ($loop) {
         $eventStore = new EventStore(
