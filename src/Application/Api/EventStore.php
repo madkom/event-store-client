@@ -81,7 +81,7 @@ class EventStore
             if(sizeof($socketMessages) == 0) {
                 return;
             }
-            /** @var SocketMessage $socketMessage */
+
             foreach ($socketMessages as $socketMessage) {
                 $messageType = $socketMessage->getMessageType()->getType();
                 if (array_key_exists($messageType, $actionsToRun)) {

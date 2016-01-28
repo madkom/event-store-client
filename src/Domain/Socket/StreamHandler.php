@@ -59,7 +59,7 @@ class StreamHandler
      *
      * @param string $data
      *
-     * @return SocketMessage|null
+     * @return SocketMessage[]|null
      */
     public function handle($data)
     {
