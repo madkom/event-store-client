@@ -1,10 +1,13 @@
 Event Store Client
 ==================
 
-Client for [event store](https://geteventstore.com/) TCP Api
+Client for Event Store from [GetEventStore.com](https://geteventstore.com/) TCP API - Communication in Real Time 
 
+[![Latest Stable Version](https://poser.pugx.org/madkom/eventstore-client/v/stable)](https://packagist.org/packages/madkom/eventstore-client)
+[![Total Downloads](https://poser.pugx.org/madkom/eventstore-client/downloads)](https://packagist.org/packages/madkom/eventstore-client)
 [![Build Status](https://travis-ci.org/madkom/event-store-client.svg?branch=master)](https://travis-ci.org/madkom/event-store-client)
 [![Stories in Ready](https://badge.waffle.io/madkom/event-store-client.png?label=ready&title=Ready)](https://waffle.io/madkom/event-store-client)
+[![License](https://poser.pugx.org/madkom/eventstore-client/license)](https://packagist.org/packages/madkom/eventstore-client)
 
 ---
 
@@ -20,18 +23,22 @@ It is very fast library for building stream data ready to send over sockets.
         4. Add extension to your php.ini `extension = protobuf.so` 
 
 ### Example usage
-Can be found [here](https://github.com/madkom/event-source-client/blob/master/usage/usageExample.php)
-If you have running event store instance and protobuf extension installed, you can replace `gethostbyname('es')` in usages with your ES's IP.  
+
+Working examples can be found in [usageExample.php](https://github.com/madkom/event-source-client/blob/master/usage/usageExample.php) and 
+[persistentSubscription.php](https://github.com/madkom/event-source-client/blob/master/usage/persistentSubscription.php).
+If you have running event store instance and [protobuf-allegro](https://github.com/allegro/php-protobuf) extension installed, 
+you can replace `gethostbyname('es')` in usages with your ES's IP.  
 Otherwise if you don't have running instance of event store. You can run it by using `docker`.    
 With following command: `docker-compose up` and log in to the php+protobuf container by using command:
-- `docker exec -it eventstoreclient_php-protobuf_1 /bin/bash`
-- `php /var/www/usage/usageExample.php`
+
+* Enter client container: `docker exec -it eventstoreclient_php-protobuf_1 /bin/bash`
+* Run usage example: `php /var/www/usage/usageExample.php`
 
 ## License
 
 The MIT License (MIT)
 
-Copyright (c) 2015 Madkom S.A.
+Copyright (c) 2015-2016 Madkom S.A.
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
